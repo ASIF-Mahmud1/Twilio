@@ -11,10 +11,10 @@ const { Text } = Typography;
 export class ConversationsList extends React.Component {
     render() {
         const { conversations, selectedConversationSid, onConversationClick } = this.props;
-
+        console.log("My Conversations ", conversations);
         return (
             <List
-                header={"Open Conversations"}
+                header={"Open Conversations "+conversations.length}
                 className={conversationsListStyles['conversations-list']}
                 bordered={true}
                 loading={conversations.length === 0}

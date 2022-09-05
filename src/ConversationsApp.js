@@ -68,13 +68,14 @@ class ConversationsApp extends React.Component {
 
   getToken = () => {
     // Paste your unique Chat token function
-    const myToken = "<Your token here>";
-    this.setState({ token: myToken }, this.initConversations);
+    const myToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhYzExYzE3MjI3MzZkODNhYmRiNzEwMWY4MmYxM2M2LTE2NjIzNzcxNTIiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJNYWhtdWQiLCJjaGF0Ijp7InNlcnZpY2Vfc2lkIjoiSVNhMDgwMDZjOGRhNDg0MWM2YTY5NGNhZTNiZTY5YmRlZSJ9fSwiaWF0IjoxNjYyMzc3MTUyLCJleHAiOjE2NjIzODA3NTIsImlzcyI6IlNLN2FjMTFjMTcyMjczNmQ4M2FiZGI3MTAxZjgyZjEzYzYiLCJzdWIiOiJBQ2M0ZWY5Nzg5Njk3MDhmMGE1M2I2NzdkOTdlOGUyZDA1In0.6W9CTscS5P5eq7xVbTa3nyNdsJ0UCn-8FRMfI3IqbFU"
+       this.setState({ token: myToken }, this.initConversations);
   };
 
   initConversations = async () => {
     window.conversationsClient = ConversationsClient;
     this.conversationsClient = await ConversationsClient.create(this.state.token);
+  
     this.setState({ statusString: "Connecting to Twilio…" });
 
     this.conversationsClient.on("connectionStateChanged", (state) => {
