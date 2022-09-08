@@ -1,19 +1,21 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
+
+const mongoose  =require ('mongoose')
+
+const {app}  =require ('./express')
+
+
+mongoose.Promise = global.Promise
 const port = process.env.PORT || 5000;
-app.use(cors());
-app.use(express.json());
-app.use(require("./routes/record"));
+// Connection URL
+mongoose.connect(process.env.ATLAS_URI)
+mongoose.connection.on('error', () => {
+  throw new Error(`unable to connect to database: ${mongoUri}`)
+})
 // get driver connection
-const dbo = require("./db/conn");
 
-app.listen(port, () => {
-  // perform a database connection when server starts
-  dbo.connectToServer(function (err) {
-    if (err) console.error(err);
-
-  });
-  console.log(`Server is running on port: ${port}`);
+app.listen(port, (err) => {
+  if (err) {
+    console.log(err)
+  }
+  console.info('Server started on port %s.', port)
 });
