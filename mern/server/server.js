@@ -7,7 +7,13 @@ const {app}  =require ('./express')
 mongoose.Promise = global.Promise
 const port = process.env.PORT || 5000;
 // Connection URL
-mongoose.connect(process.env.ATLAS_URI)
+mongoose.connect(process.env.ATLAS_URI, {
+  //   these are options to ensure that the connection is done properly
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+ 
+})
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`)
 })
