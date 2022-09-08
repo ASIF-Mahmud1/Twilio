@@ -1,8 +1,8 @@
 
 const mongoose = require('mongoose')
 const { app } = require('./express')
-
-
+require("dotenv").config({ path: "./config.env" });
+// console.log(process.env) //
 mongoose.Promise = global.Promise
 const port = process.env.PORT || 5000;
 // Connection URL
