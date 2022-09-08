@@ -1,7 +1,6 @@
 
-const mongoose  =require ('mongoose')
-
-const {app}  =require ('./express')
+const mongoose = require('mongoose')
+const { app } = require('./express')
 
 
 mongoose.Promise = global.Promise
@@ -12,7 +11,7 @@ mongoose.connect(process.env.ATLAS_URI, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
- 
+
 })
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`)
