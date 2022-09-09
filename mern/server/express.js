@@ -2,9 +2,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const {authRoutes} =require ('../server/routes/auth.routes')
+const {userRoutes} =require ('../server/routes/user.routes')
+
 app.use(cors());
 app.use(express.json());
 app.use('/', authRoutes)
+app.use('/', userRoutes)
 
 module.exports={
     app:app
