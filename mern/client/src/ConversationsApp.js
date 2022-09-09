@@ -58,6 +58,11 @@ class ConversationsApp extends React.Component {
     }
   };
 
+  signUp = async (name, email, password) => {
+    console.log("Make API call to Sign UP");
+  };
+
+
   logOut = (event) => {
     if (event) {
       event.preventDefault();
@@ -232,7 +237,7 @@ class ConversationsApp extends React.Component {
     }
     if((this.state.loggedIn ==false) && (this.state.signUp===true) )
     {
-      return <SignUpPage  onSubmit={()=>{console.log("Call Sign Up")}} toggleSignUp={this.toggleSignUp}  />
+      return <SignUpPage  onSubmit={this.signUp} toggleSignUp={this.toggleSignUp}  />
     }
     return <LoginPage onSubmit={this.logIn} toggleSignUp={this.toggleSignUp} />;
   }
