@@ -18,22 +18,21 @@ export class LoginPage extends React.Component {
         });
     };
 
-    showSignUp=()=>{
-        console.log("trigerred");
+    backToSignIn=()=>{
         this.props.toggleSignUp()
     }
-
     render() {
         const { getFieldDecorator } = this.props.form;
 
         const usernameFieldDecorator = getFieldDecorator('username', {
+            rules: [{ required: true, message: 'Please input your name!' }],
+        });
+        const emailFieldDecorator = getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input your email!' }],
         });
-
         const passwordFieldDecorator = getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your password!' }],
         });
-
 
         return (
             <Layout>
@@ -43,19 +42,26 @@ export class LoginPage extends React.Component {
                             <Card style={{ maxWidth: '404px' }}>
                                 <Row type="flex" justify="center" align="middle" style={{ marginBottom: '30px' }}>
                                     {/* <Logo/> */}
-                                    <p style={{fontSize:20}}>Sign In</p>
+                                    <p style={{fontSize:20}}>Sign Up</p>
                                 </Row>
 
                                 <Form onSubmit={this.handleSubmit}>
-                                    <Form.Item>
+                                <Form.Item>
                                         {usernameFieldDecorator(
                                             <Input
                                                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                                placeholder="name"
+                                            />,
+                                        )}
+                                    </Form.Item>
+                                    <Form.Item>
+                                        {emailFieldDecorator(
+                                            <Input
+                                                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>}
                                                 placeholder="email"
                                             />,
                                         )}
                                     </Form.Item>
-
                                     <Form.Item>
                                         {passwordFieldDecorator(
                                             <Input
@@ -66,12 +72,13 @@ export class LoginPage extends React.Component {
                                     </Form.Item>
                                     <Form.Item>
                                         <Button block type="primary" htmlType="submit">
-                                            Sign in
+                                            Sign Up
                                         </Button>
+                                        <p style={{color:'red', textAlign:'center'}}  >Sign Up Sucessfully. Go Back to Sign In!</p>
                                     </Form.Item>
                                     <Form.Item>
-                                        <Button block type="secondary" onClick={()=>{this.showSignUp()}}>
-                                            Sign Up
+                                        <Button block type="secondary" onClick={()=>{this.backToSignIn()}}>
+                                            Go Back
                                         </Button>
                                     </Form.Item>
                                 </Form>

@@ -8,6 +8,7 @@ import { ReactComponent as Logo } from "./assets/twilio-mark-red.svg";
 
 import Conversation from "./Conversation";
 import LoginPage from "./LoginPage";
+import SignUpPage from "./SignUp";
 import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
 import { getTwilioToken } from "./api/auth.api";
@@ -24,6 +25,7 @@ class ConversationsApp extends React.Component {
     this.state = {
       name,
       loggedIn,
+      signUp:false,
       token: null,
       statusString: null,
       conversationsReady: false,
@@ -38,6 +40,11 @@ class ConversationsApp extends React.Component {
       this.getToken();
       this.setState({ statusString: "Fetching credentials…" });
     }
+  };
+
+  toggleSignUp = () => {
+    
+    this.setState({signUp:!this.state.signUp})
   };
 
   logIn = (name) => {
@@ -213,8 +220,11 @@ class ConversationsApp extends React.Component {
         </div>
       );
     }
-
-    return <LoginPage onSubmit={this.logIn} />;
+    if((this.state.loggedIn ==false) && (this.state.signUp===true) )
+    {
+      return <SignUpPage  onSubmit={()=>{console.log("Call Sign Up")}} toggleSignUp={this.toggleSignUp}  />
+    }
+    return <LoginPage onSubmit={this.logIn} toggleSignUp={this.toggleSignUp} />;
   }
 }
 
