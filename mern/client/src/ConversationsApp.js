@@ -68,7 +68,7 @@ class ConversationsApp extends React.Component {
 
   getToken = async() => {
     // Paste your unique Chat token function
-    const {twilioToken} = await  getTwilioToken({email:"cheesy@gmail.com"}) //"<Your token here>";
+    const {twilioToken} = await  getTwilioToken({email:this.state.name}) //"<Your token here>";
     this.setState({ token: twilioToken }, this.initConversations);
   };
 
