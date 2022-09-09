@@ -19,11 +19,12 @@ class ConversationsApp extends React.Component {
   constructor(props) {
     super(props);
 
-    const name = localStorage.getItem("name") || "";
-    const loggedIn = name !== "";
+    const email = localStorage.getItem("email") || "";
+    const loggedIn = email !== "";
 
     this.state = {
-      name,
+
+      email,
       loggedIn,
       signUp:false,
       token: null,
@@ -47,10 +48,10 @@ class ConversationsApp extends React.Component {
     this.setState({signUp:!this.state.signUp})
   };
 
-  logIn = (name) => {
-    if (name !== "") {
-      localStorage.setItem("name", name);
-      this.setState({ name, loggedIn: true }, this.getToken);
+  logIn = (email, password) => {
+    if (email !== "") {
+      localStorage.setItem("email", email);
+      this.setState({ email,loggedIn: true }, this.getToken);
     }
   };
 
@@ -60,7 +61,8 @@ class ConversationsApp extends React.Component {
     }
 
     this.setState({
-      name: "",
+     
+      email:"",
       loggedIn: false,
       token: "",
       conversationsReady: false,
@@ -69,13 +71,13 @@ class ConversationsApp extends React.Component {
       conversations: []
     });
 
-    localStorage.removeItem("name");
+    localStorage.removeItem("email");
     this.conversationsClient.shutdown();
   };
 
   getToken = async() => {
     // Paste your unique Chat token function
-    const {twilioToken} = await  getTwilioToken({email:this.state.name}) //"<Your token here>";
+    const {twilioToken} = await  getTwilioToken({email:this.state.email}) //"<Your token here>";
     this.setState({ token: twilioToken }, this.initConversations);
   };
 
@@ -139,7 +141,7 @@ class ConversationsApp extends React.Component {
       conversationContent = (
         <Conversation
           conversationProxy={selectedConversation}
-          myIdentity={this.state.name}
+          myIdentity={this.state.email}
         />
       );
     } else if (status !== "success") {
