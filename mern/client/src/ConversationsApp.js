@@ -10,7 +10,7 @@ import Conversation from "./Conversation";
 import LoginPage from "./LoginPage";
 import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
-
+import { getTwilioToken } from "./api/auth.api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
@@ -66,10 +66,10 @@ class ConversationsApp extends React.Component {
     this.conversationsClient.shutdown();
   };
 
-  getToken = () => {
+  getToken = async() => {
     // Paste your unique Chat token function
-    const myToken = "<Your token here>";
-    this.setState({ token: myToken }, this.initConversations);
+    const {twilioToken} = await  getTwilioToken({email:"cheesy@gmail.com"}) //"<Your token here>";
+    this.setState({ token: twilioToken }, this.initConversations);
   };
 
   initConversations = async () => {
@@ -118,7 +118,10 @@ class ConversationsApp extends React.Component {
     });
   };
 
+  
+
   render() {
+    console.log("Mytoken ",this.state.token);
     const { conversations, selectedConversationSid, status } = this.state;
     const selectedConversation = conversations.find(
       (it) => it.sid === selectedConversationSid
