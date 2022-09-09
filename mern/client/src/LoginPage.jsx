@@ -12,8 +12,8 @@ export class LoginPage extends React.Component {
 
         form.validateFields((err, values) => {
             if (!err) {
-                const { username } = values;
-                onSubmit(username);
+                const { username,password } = values;
+                onSubmit(username, password);
             }
         });
     };

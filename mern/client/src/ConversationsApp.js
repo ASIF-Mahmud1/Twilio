@@ -11,7 +11,7 @@ import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUp";
 import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
-import { getTwilioToken } from "./api/auth.api";
+import { getTwilioToken, signin } from "./api/auth.api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
@@ -25,6 +25,7 @@ class ConversationsApp extends React.Component {
     this.state = {
 
       email,
+      password:'',
       loggedIn,
       signUp:false,
       token: null,
@@ -49,9 +50,11 @@ class ConversationsApp extends React.Component {
   };
 
   logIn = (email, password) => {
+  
+   
     if (email !== "") {
-      localStorage.setItem("email", email);
-      this.setState({ email,loggedIn: true }, this.getToken);
+    
+      this.setState({ email, password }, this.getToken);
     }
   };
 
@@ -77,9 +80,14 @@ class ConversationsApp extends React.Component {
 
   getToken = async() => {
     // Paste your unique Chat token function
-    const {twilioToken} = await  getTwilioToken({email:this.state.email}) //"<Your token here>";
-    this.setState({ token: twilioToken }, this.initConversations);
-  };
+    
+    const {twilioToken} = await  signin({email:this.state.email, password: this.state.password}) //"<Your token here>";
+   if(twilioToken)
+   {
+     localStorage.setItem("email", this.state.email);
+     this.setState({ token: twilioToken , loggedIn: true}, this.initConversations);
+  }
+};
 
   initConversations = async () => {
     window.conversationsClient = ConversationsClient;
