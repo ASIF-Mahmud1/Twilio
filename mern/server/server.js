@@ -14,7 +14,7 @@ mongoose.connect(process.env.ATLAS_URI, {
 
 })
 mongoose.connection.on('error', () => {
-  throw new Error(`unable to connect to database: ${mongoUri}`)
+  throw new Error(`unable to connect to database: ${process.env.ATLAS_URI}`)
 })
 // get driver connection
 

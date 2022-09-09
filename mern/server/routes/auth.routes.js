@@ -5,6 +5,9 @@ const router = express.Router()
 router.route('/login')
   .post(authCtrl.signin)
 
+router.route('/twilioToken')
+  .post(authCtrl.getTwilioToken)
+
 module.exports = {
   authRoutes: router
 }

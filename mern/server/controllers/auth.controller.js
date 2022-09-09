@@ -24,8 +24,18 @@ const signin = (req, res) => {
   })
 }
 
+const getTwilioToken=(req,res)=>{
+
+  const token= twilio.getToken({email:req.body.email})
+  return res.json({
+    twilioToken: token,
+   
+  })
+}
+
 
 module.exports= {
   signin:signin,
+  getTwilioToken:getTwilioToken
 
 }
