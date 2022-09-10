@@ -34,8 +34,25 @@ const create = async (req, res, next) => {
 
 }
 
+const list =async (req,res, next)=>{
+   const result = await client.conversations.v1.conversations.list()
+   if(!result.error)
+   {
+      res.status(200).send({
+         message: "All Conversation",
+         connversation:result,
+      });
+   }
+
+   res.status(500).send({
+      message: "Error fetching conversation ",
+      error:result.error,
+    });
+}
+
 module.exports= {
-    create:create
+    create:create,
+    list:list,
    
    }
  
