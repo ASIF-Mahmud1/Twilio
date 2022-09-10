@@ -2,7 +2,7 @@ const User =require('../models/user.model')
 const twilio = require('../helper/twilio.helper')
 
 const signin = (req, res) => {
-    console.log(req.body);
+  
     User.findOne({
     "email": req.body.email
   }, (err, user) => {

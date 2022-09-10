@@ -21,7 +21,7 @@ const getToken =({email})=>{
     const chatGrant = new ChatGrant({
       serviceSid: serviceSid,
     });
-    console.log(chatGrant);
+   
 
     // Create an access token which we will sign and return to the client,
     // containing the grant we just created
@@ -35,7 +35,7 @@ const getToken =({email})=>{
     token.addGrant(chatGrant);
 
     // Serialize the token to a JWT string
-    console.log(token.toJwt());
+  
     return token.toJwt()
    
 }

@@ -4,7 +4,6 @@ const TWILIO_AUTH_TOKEN=process.env.TWILIO_AUTH_TOKEN
 
 const signUp=(req,res, next)=>{
 
-  console.log(req.body);
 
       const user = new User({
         name: req.body.name,  
