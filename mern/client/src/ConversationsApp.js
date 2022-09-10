@@ -120,7 +120,7 @@ class ConversationsApp extends React.Component {
         });
       if (state === "connected") {
         this.setState({
-          statusString: "You are connected.",
+          statusString: `You are connected ( ${this.state.email} )`,
           status: "success"
         });
       }
