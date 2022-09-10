@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, Icon, Layout, Spin, Typography } from "antd";
+import { Badge, Icon, Layout, Result, Spin, Typography } from "antd";
 import { Client as ConversationsClient } from "@twilio/conversations";
 
 import "./assets/Conversation.css";
@@ -12,6 +12,7 @@ import SignUpPage from "./SignUp";
 import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
 import { getTwilioToken, signin } from "./api/auth.api";
+import { list } from "./api/conversation.api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
@@ -32,6 +33,7 @@ class ConversationsApp extends React.Component {
       statusString: null,
       conversationsReady: false,
       conversations: [],
+      allConversations:[],
       selectedConversationSid: null,
       newMessage: ""
     };
@@ -76,7 +78,8 @@ class ConversationsApp extends React.Component {
       conversationsReady: false,
       messages: [],
       newMessage: "",
-      conversations: []
+      conversations: [],
+      allConversations:[]
     });
 
     localStorage.removeItem("email");
@@ -91,6 +94,13 @@ class ConversationsApp extends React.Component {
    {
      localStorage.setItem("email", this.state.email);
      this.setState({ token: twilioToken , loggedIn: true}, this.initConversations);
+     const conversationsFromServer= await list()
+     console.log("more ", conversationsFromServer);
+     if(conversationsFromServer.conversation)
+     {
+      console.log("Here ", conversationsFromServer);
+      this.setState(({allConversations:conversationsFromServer.conversation}))
+     }
   }
 };
 
@@ -144,7 +154,7 @@ class ConversationsApp extends React.Component {
 
   render() {
     console.log("Mytoken ",this.state.token);
-    const { conversations, selectedConversationSid, status } = this.state;
+    const { conversations,allConversations, selectedConversationSid, status } = this.state;
     const selectedConversation = conversations.find(
       (it) => it.sid === selectedConversationSid
     );
@@ -227,9 +237,20 @@ class ConversationsApp extends React.Component {
                   }}
                 />
               </Sider>
+            
               <Content className="conversation-section">
                 <div id="SelectedConversation">{conversationContent}</div>
               </Content>
+              <Sider theme={"light"} width={250}>
+
+                <ConversationsList
+                  conversations={allConversations}
+                  selectedConversationSid={selectedConversationSid}
+                  onConversationClick={(item) => {
+                    this.setState({ selectedConversationSid: item.sid });
+                  }}
+                />
+              </Sider>
             </Layout>
           </Layout>
         </div>

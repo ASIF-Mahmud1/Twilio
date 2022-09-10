@@ -40,14 +40,17 @@ const list =async (req,res, next)=>{
    {
       res.status(200).send({
          message: "All Conversation",
-         connversation:result,
+         conversation:result,
       });
    }
+   else
+   {
+      res.status(500).send({
+         message: "Error fetching conversation ",
+         error:result.error,
+       });
+   }
 
-   res.status(500).send({
-      message: "Error fetching conversation ",
-      error:result.error,
-    });
 }
 
 module.exports= {

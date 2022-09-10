@@ -3,7 +3,7 @@ import { url } from '../config/config'
 const signin = async ({ email, password }) => {
 
   try {
-    let response = await fetch(url + 'login', {
+    let response = await fetch(url + 'auth/login', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -21,7 +21,7 @@ const signin = async ({ email, password }) => {
 const getTwilioToken = async ({ email }) => {
 
   try {
-    let response = await fetch(url + 'twilioToken', {
+    let response = await fetch(url + 'auth/twilioToken', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
