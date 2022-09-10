@@ -21,12 +21,13 @@ class ConversationsApp extends React.Component {
     super(props);
 
     const email = localStorage.getItem("email") || "";
+    const password = localStorage.getItem("password") || "";
     const loggedIn = email !== "";
 
     this.state = {
 
       email,
-      password:'',
+      password,
       loggedIn,
       signUp:false,
       token: null,
@@ -83,6 +84,7 @@ class ConversationsApp extends React.Component {
     });
 
     localStorage.removeItem("email");
+    localStorage.removeItem("password");
     this.conversationsClient.shutdown();
   };
 
@@ -93,6 +95,7 @@ class ConversationsApp extends React.Component {
    if(twilioToken)
    {
      localStorage.setItem("email", this.state.email);
+     localStorage.setItem("password", this.state.password);
      this.setState({ token: twilioToken , loggedIn: true}, this.initConversations);
      const conversationsFromServer= await list()
      console.log("more ", conversationsFromServer);
@@ -153,8 +156,24 @@ class ConversationsApp extends React.Component {
   
 
   render() {
-    console.log("Mytoken ",this.state.token);
+  
     const { conversations,allConversations, selectedConversationSid, status } = this.state;
+    /////////////////////////////////////////////////////////////////
+
+   const unSubscribedConversations= allConversations.filter((item)=>{
+      const found=conversations.find((ele)=> ele.sid==item.sid)
+      if(found)
+      {
+          return false
+      }
+      else
+      {
+          return true
+      }
+    })
+
+    console.log("UnSubcribed Conversations: ", unSubscribedConversations.length);
+    ///////////////////////////////////////////////////////////////
     const selectedConversation = conversations.find(
       (it) => it.sid === selectedConversationSid
     );
@@ -244,7 +263,7 @@ class ConversationsApp extends React.Component {
               <Sider theme={"light"} width={250}>
 
                 <ConversationsList
-                  conversations={allConversations}
+                  conversations={unSubscribedConversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
                     this.setState({ selectedConversationSid: item.sid });
