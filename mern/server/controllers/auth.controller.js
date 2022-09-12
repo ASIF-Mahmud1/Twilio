@@ -19,7 +19,7 @@ const signin = (req, res) => {
       const token= twilio.getToken({email:req.body.email})
       return res.json({
         twilioToken: token,
-        user: {_id: user._id, name: user.name, email: user.email}
+        user: {_id: user._id, name: user.name, email: user.email, admin: user.admin}
       })
     }
     else 
