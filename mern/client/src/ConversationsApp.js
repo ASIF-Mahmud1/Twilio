@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Badge, Icon, Layout, Result, Spin, Typography } from "antd";
 import { Client as ConversationsClient } from "@twilio/conversations";
 
@@ -17,52 +17,65 @@ import { signup } from "./api/user-api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
-class ConversationsApp extends React.Component {
-  constructor(props) {
-    super(props);
+const ConversationsApp =()=>{
+  let conversationsClient =null
+  const email = localStorage.getItem("email") || "";
+  const password = localStorage.getItem("password") || "";
+  const loggedIn = email !== "";
 
-    const email = localStorage.getItem("email") || "";
-    const password = localStorage.getItem("password") || "";
-    const loggedIn = email !== "";
+  const [values,setValues] = useState({
+    email,
+    password,
+    loggedIn,
+    signUp:false,
+    token: null,
+    statusString: null,
+    conversationsReady: false,
+    conversations: [],
+    allConversations:[],
+    selectedConversationSid: null,
+    newMessage: ""
+  })
 
-    this.state = {
-
-      email,
-      password,
-      loggedIn,
-      signUp:false,
-      token: null,
-      statusString: null,
-      conversationsReady: false,
-      conversations: [],
-      allConversations:[],
-      selectedConversationSid: null,
-      newMessage: ""
-    };
-  }
-
-  componentDidMount = () => {
-    if (this.state.loggedIn) {
-      this.getToken();
-      this.setState({ statusString: "Fetching credentials…" });
+  useEffect(()=>{
+    if (values.loggedIn) {
+      getToken();
+      setValues((prevState)=>({...prevState, statusString: "Fetching credentials…"}))
     }
+  },[values.email, values.password])
+
+
+  useEffect(()=>{
+    if(values.loggedIn && values.token) 
+    {
+       initConversations()
+    }
+  },[values.loggedIn, values.token])
+
+  useEffect(()=>{
+    if(values.selectedConversationSid)
+    {
+      handleAddParticipant(values.selectedConversationSid)
+    }
+  },[values.selectedConversationSid])
+
+
+  const toggleSignUp = () => {
+    setValues((prevState)=>({...prevState, signUp:!prevState.signUp }))
+
+   
   };
 
-  toggleSignUp = () => {
-    
-    this.setState({signUp:!this.state.signUp})
-  };
-
-  logIn = (email, password) => {
+  const logIn = (email, password) => {
   
    
     if (email !== "") {
-    
-      this.setState({ email, password }, this.getToken);
+      setValues((prevState)=>({...prevState, email,  password }))
+
     }
   };
 
-  signUp = async (name, email, password, admin) => {
+  const signUp = async (name, email, password, admin) => {
     console.log("Make API call to Sign UP", {name, email, password, admin});
     const result= await signup({name, email, password, admin})
     
@@ -73,95 +86,118 @@ class ConversationsApp extends React.Component {
   };
 
 
-  logOut = (event) => {
+  const logOut = (event) => {
     if (event) {
       event.preventDefault();
     }
+    setValues((prevState)=>({...prevState, 
+    email:"",
+    loggedIn: false,
+    token: "",
+    conversationsReady: false,
+    messages: [],
+    newMessage: "",
+    conversations: [],
+    allConversations:[] 
+  }))
 
-    this.setState({
-     
-      email:"",
-      loggedIn: false,
-      token: "",
-      conversationsReady: false,
-      messages: [],
-      newMessage: "",
-      conversations: [],
-      allConversations:[]
-    });
-
+ 
     localStorage.removeItem("email");
     localStorage.removeItem("password");
-    this.conversationsClient.shutdown();
+    conversationsClient.shutdown();
   };
 
-  getToken = async() => {
+
+  const getToken = async() => {
     // Paste your unique Chat token function
     
-    const {twilioToken} = await  signin({email:this.state.email, password: this.state.password}) //"<Your token here>";
+    const {twilioToken} = await  signin({email:values.email, password:values.password}) //"<Your token here>";
    if(twilioToken)
    {
-     localStorage.setItem("email", this.state.email);
-     localStorage.setItem("password", this.state.password);
-     this.setState({ token: twilioToken , loggedIn: true}, this.initConversations);
+     localStorage.setItem("email",values.email);
+     localStorage.setItem("password", values.password);
+     setValues((prevState)=>({...prevState,token: twilioToken , loggedIn: true }))
+
+   
      const conversationsFromServer= await list()
-     console.log("more ", conversationsFromServer);
+   
      if(conversationsFromServer.conversation)
      {
-      console.log("Here ", conversationsFromServer);
-      this.setState(({allConversations:conversationsFromServer.conversation}))
+      
+      setValues((prevState)=>({...prevState, allConversations:conversationsFromServer.conversation}))
+
      }
   }
 };
 
-  initConversations = async () => {
-    window.conversationsClient = ConversationsClient;
-    this.conversationsClient = await ConversationsClient.create(this.state.token);
-    this.setState({ statusString: "Connecting to Twilio…" });
 
-    this.conversationsClient.on("connectionStateChanged", (state) => {
+
+ const initConversations = async () => {
+  
+    conversationsClient = await ConversationsClient.create(values.token);
+  
+    setValues((prevState)=>({...prevState,  statusString: "Connecting to Twilio…"}))
+
+
+     conversationsClient.on("connectionStateChanged", (state) => {
       if (state === "connecting")
-        this.setState({
+      {
+        setValues((prevState)=>({...prevState, 
           statusString: "Connecting to Twilio…",
-          status: "default"
-        });
-      if (state === "connected") {
-        this.setState({
-          statusString: `You are connected ( ${this.state.email} )`,
+          status: "default"}))
+      }
+    
+      if (state === "connected") 
+      {
+        setValues((prevState)=>({...prevState, 
+          statusString: `You are connected ( ${values.email} )`,
           status: "success"
-        });
+        }))
       }
       if (state === "disconnecting")
-        this.setState({
+      {
+        setValues((prevState)=>({...prevState, 
           statusString: "Disconnecting from Twilio…",
           conversationsReady: false,
-          status: "default"
-        });
+          status: "default"}))
+      }
+        
       if (state === "disconnected")
-        this.setState({
+      {
+        setValues((prevState)=>({...prevState, 
           statusString: "Disconnected.",
           conversationsReady: false,
           status: "warning"
-        });
+
+        }))
+      }
+        
       if (state === "denied")
-        this.setState({
+      {
+        setValues((prevState)=>({...prevState, 
           statusString: "Failed to connect.",
           conversationsReady: false,
           status: "error"
-        });
+
+        }))
+      }
     });
-    this.conversationsClient.on("conversationJoined", (conversation) => {
-      this.setState({ conversations: [...this.state.conversations, conversation] });
+
+    conversationsClient.on("conversationJoined", (conversation) => {
+      setValues((prevState)=>({...prevState,
+        conversations: [...values.conversations, conversation]
+      }))
+      
     });
-    this.conversationsClient.on("conversationLeft", (thisConversation) => {
-      this.setState({
-        conversations: [...this.state.conversations.filter((it) => it !== thisConversation)]
-      });
+    conversationsClient.on("conversationLeft", (thisConversation) => {
+      setValues((prevState)=>({...prevState,
+        conversations: [...values.conversations.filter((it) => it !== thisConversation)]
+      }))
     });
   };
 
-  handleAddParticipant= async({sid})=>{
-    const identity= this.state.email
+  const handleAddParticipant= async({sid})=>{
+    const identity= values.email
     console.log({sid, identity});
     const result= await addParticipant({sid, identity})
     console.log(result);
@@ -171,9 +207,9 @@ class ConversationsApp extends React.Component {
     }
   }
 
-  render() {
+
   
-    const { conversations,allConversations, selectedConversationSid, status } = this.state;
+    const { conversations,allConversations, selectedConversationSid, status } = values;
     /////////////////////////////////////////////////////////////////
 
    const unSubscribedConversations= allConversations.filter((item)=>{
@@ -199,7 +235,7 @@ class ConversationsApp extends React.Component {
       conversationContent = (
         <Conversation
           conversationProxy={selectedConversation}
-          myIdentity={this.state.email}
+          myIdentity={values.email}
         />
       );
     } else if (status !== "success") {
@@ -208,7 +244,7 @@ class ConversationsApp extends React.Component {
       conversationContent = "";
     }
 
-    if (this.state.loggedIn) {
+    if (values.loggedIn) {
       return (
         <div className="conversations-window-wrapper">
           <Layout className="conversations-window-container">
@@ -242,17 +278,17 @@ class ConversationsApp extends React.Component {
                 <HeaderItem style={{ float: "right", marginLeft: "auto" }}>
                   <span
                     style={{ color: "white" }}
-                  >{` ${this.state.statusString}`}</span>
+                  >{` ${values.statusString}`}</span>
                   <Badge
                     dot={true}
-                    status={this.state.status}
+                    status={values.status}
                     style={{ marginLeft: "1em" }}
                   />
                 </HeaderItem>
                 <HeaderItem>
                   <Icon
                     type="poweroff"
-                    onClick={this.logOut}
+                    onClick={logOut}
                     style={{
                       color: "white",
                       fontSize: "20px",
@@ -270,7 +306,10 @@ class ConversationsApp extends React.Component {
                   conversations={conversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
-                    this.setState({ selectedConversationSid: item.sid });
+                    setValues((prevState)=>({...prevState,
+                      selectedConversationSid: item.sid 
+                    }))
+                   
                   }}
                 />
               </Sider>
@@ -286,9 +325,9 @@ class ConversationsApp extends React.Component {
                   conversations={unSubscribedConversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
-                   this.setState({ selectedConversationSid: item.sid },()=>{
-                     this.handleAddParticipant(item)
-                   });
+                    setValues((prevState)=>({...prevState,
+                      selectedConversationSid: item.sid
+                    }))
                   }}
                 />
               </Sider>
@@ -297,12 +336,12 @@ class ConversationsApp extends React.Component {
         </div>
       );
     }
-    if((this.state.loggedIn ==false) && (this.state.signUp===true) )
+    if((values.loggedIn ==false) && (values.signUp===true) )
     {
-      return <SignUpPage  onSubmit={this.signUp} toggleSignUp={this.toggleSignUp}  />
+      return <SignUpPage  onSubmit={signUp} toggleSignUp={toggleSignUp}  />
     }
-    return <LoginPage onSubmit={this.logIn} toggleSignUp={this.toggleSignUp} />;
-  }
+    return <LoginPage onSubmit={logIn} toggleSignUp={toggleSignUp} />;
+  
 }
 
 export default ConversationsApp;
