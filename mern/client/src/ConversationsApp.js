@@ -12,7 +12,7 @@ import SignUpPage from "./SignUp";
 import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
 import { getTwilioToken, signin } from "./api/auth.api";
-import { list } from "./api/conversation.api";
+import { list, addParticipant } from "./api/conversation.api";
 import { signup } from "./api/user-api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
@@ -160,7 +160,16 @@ class ConversationsApp extends React.Component {
     });
   };
 
-  
+  handleAddParticipant= async({sid})=>{
+    const identity= this.state.email
+    console.log({sid, identity});
+    const result= await addParticipant({sid, identity})
+    console.log(result);
+    if(result.conversation)
+    {
+      alert(result.message)
+    }
+  }
 
   render() {
   
@@ -256,6 +265,7 @@ class ConversationsApp extends React.Component {
             <Layout>
               <Sider theme={"light"} width={250}>
                 <ConversationsList
+                  header={"Open Conversation"}
                   conversations={conversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
@@ -270,10 +280,14 @@ class ConversationsApp extends React.Component {
               <Sider theme={"light"} width={250}>
 
                 <ConversationsList
+                  header={"Not Added with You"}
                   conversations={unSubscribedConversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
-                    this.setState({ selectedConversationSid: item.sid });
+                   this.setState({ selectedConversationSid: item.sid },()=>{
+
+                     this.handleAddParticipant(item)
+                   });
                   }}
                 />
               </Sider>

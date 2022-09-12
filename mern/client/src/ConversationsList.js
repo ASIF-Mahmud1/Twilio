@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Typography } from "antd";
+import { List, Typography, Button, Icon } from "antd";
 
 import conversationsListStyles from "./assets/ConversationsList.module.css";
 import conversationsItemStyles from "./assets/ConversationsItem.module.css";
@@ -10,11 +10,11 @@ const { Text } = Typography;
 
 export class ConversationsList extends React.Component {
     render() {
-        const { conversations, selectedConversationSid, onConversationClick } = this.props;
+        const { conversations, selectedConversationSid, onConversationClick, header,  } = this.props;
 
         return (
             <List
-                header={"Open Conversations"}
+                header={header}
                 className={conversationsListStyles['conversations-list']}
                 bordered={true}
                 loading={conversations.length === 0}
@@ -38,6 +38,9 @@ export class ConversationsList extends React.Component {
                             >
                                 {item.friendlyName || item.sid}
                             </Text>
+                            <Button>
+                                <Icon type={"plus"} />
+                            </Button>
                         </List.Item>
                     )
                 }}
