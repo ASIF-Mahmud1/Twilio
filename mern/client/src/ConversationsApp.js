@@ -13,6 +13,7 @@ import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
 import { getTwilioToken, signin } from "./api/auth.api";
 import { list } from "./api/conversation.api";
+import { signup } from "./api/user-api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
@@ -62,7 +63,13 @@ class ConversationsApp extends React.Component {
   };
 
   signUp = async (name, email, password) => {
-    console.log("Make API call to Sign UP");
+    console.log("Make API call to Sign UP", {name, email, password});
+    const result= await signup({name, email, password})
+    
+    if(!result.error)
+    {
+      alert("Signup is successful!")
+    }
   };
 
 

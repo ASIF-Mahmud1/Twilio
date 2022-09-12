@@ -12,8 +12,8 @@ export class LoginPage extends React.Component {
 
         form.validateFields((err, values) => {
             if (!err) {
-                const { username } = values;
-                onSubmit(username);
+                const { name, email, password } = values;
+                onSubmit( name, email, password) ;
             }
         });
     };
@@ -24,7 +24,7 @@ export class LoginPage extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
 
-        const usernameFieldDecorator = getFieldDecorator('username', {
+        const usernameFieldDecorator = getFieldDecorator('name', {
             rules: [{ required: true, message: 'Please input your name!' }],
         });
         const emailFieldDecorator = getFieldDecorator('email', {
@@ -74,11 +74,10 @@ export class LoginPage extends React.Component {
                                         <Button block type="primary" htmlType="submit">
                                             Sign Up
                                         </Button>
-                                        <p style={{color:'red', textAlign:'center'}}  >Sign Up Sucessfully. Go Back to Sign In!</p>
                                     </Form.Item>
                                     <Form.Item>
                                         <Button block type="secondary" onClick={()=>{this.backToSignIn()}}>
-                                            Go Back
+                                            Back to Sign In
                                         </Button>
                                     </Form.Item>
                                 </Form>
