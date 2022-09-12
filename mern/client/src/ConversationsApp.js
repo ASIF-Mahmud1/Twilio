@@ -16,9 +16,9 @@ import { list, addParticipant } from "./api/conversation.api";
 import { signup } from "./api/user-api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
-
+let conversationsClient =null
 const ConversationsApp =()=>{
-  let conversationsClient =null
+
   const email = localStorage.getItem("email") || "";
   const password = localStorage.getItem("password") || "";
   const loggedIn = email !== "";
@@ -38,7 +38,10 @@ const ConversationsApp =()=>{
   })
 
   useEffect(()=>{
-    if (values.loggedIn) {
+    
+    if ((values.loggedIn) || (values.email && values.password) ) 
+    {
+    
       getToken();
       setValues((prevState)=>({...prevState, statusString: "Fetching credentials…"}))
     }
@@ -112,6 +115,7 @@ const ConversationsApp =()=>{
     // Paste your unique Chat token function
     
     const {twilioToken} = await  signin({email:values.email, password:values.password}) //"<Your token here>";
+    console.log(twilioToken);
    if(twilioToken)
    {
      localStorage.setItem("email",values.email);

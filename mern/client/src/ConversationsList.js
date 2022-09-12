@@ -8,9 +8,9 @@ import { joinClassNames } from "./utils/class-name";
 
 const { Text } = Typography;
 
-export class ConversationsList extends React.Component {
-    render() {
-        const { conversations, selectedConversationSid, onConversationClick, header, added } = this.props;
+export const ConversationsList =(props)=>{
+ 
+        const { conversations, selectedConversationSid, onConversationClick, header, added } = props;
 
         return (
             <List
@@ -50,5 +50,5 @@ export class ConversationsList extends React.Component {
                 }}
             />
         )
-    }
+   
 }
