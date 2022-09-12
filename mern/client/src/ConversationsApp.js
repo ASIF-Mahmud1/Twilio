@@ -167,7 +167,7 @@ class ConversationsApp extends React.Component {
     console.log(result);
     if(result.conversation)
     {
-      alert(result.message)
+      //alert(result.message)
     }
   }
 
@@ -266,6 +266,7 @@ class ConversationsApp extends React.Component {
               <Sider theme={"light"} width={250}>
                 <ConversationsList
                   header={"Open Conversation"}
+                  added={true}
                   conversations={conversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
@@ -281,11 +282,11 @@ class ConversationsApp extends React.Component {
 
                 <ConversationsList
                   header={"Not Added with You"}
+                  added={false}
                   conversations={unSubscribedConversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
                    this.setState({ selectedConversationSid: item.sid },()=>{
-
                      this.handleAddParticipant(item)
                    });
                   }}

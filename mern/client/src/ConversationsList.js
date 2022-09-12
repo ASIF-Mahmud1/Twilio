@@ -10,7 +10,7 @@ const { Text } = Typography;
 
 export class ConversationsList extends React.Component {
     render() {
-        const { conversations, selectedConversationSid, onConversationClick, header,  } = this.props;
+        const { conversations, selectedConversationSid, onConversationClick, header, added } = this.props;
 
         return (
             <List
@@ -29,17 +29,21 @@ export class ConversationsList extends React.Component {
                     return (
                         <List.Item
                             key={item.sid}
-                            onClick={() => onConversationClick(item)}
                             className={conversationItemClassName}
+                            style={activeChannel? {backgroundColor:'grey' } : {backgroundColor:'transparent'}}
                         >
                             <Text
                                 strong
                                 className={conversationsItemStyles['conversation-item-text']}
+                                style={activeChannel? {color:'white' } : {color:'black'}}
                             >
                                 {item.friendlyName || item.sid}
                             </Text>
-                            <Button>
-                                <Icon type={"plus"} />
+                            <Button   onClick={() => onConversationClick(item)}>
+                                {
+                                    added ?  <Icon type={"right"} />: <Icon type={"plus"} />
+                                }
+                               
                             </Button>
                         </List.Item>
                     )
