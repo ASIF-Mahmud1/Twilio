@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Button, Input, Icon, Form, Row, Col, Card } from 'antd';
+import { Layout, Button, Input, Icon, Form, Row, Col, Card ,Checkbox} from 'antd';
 import { ReactComponent as Logo } from './assets/twilio-mark-red.svg';
 
 const { Content } = Layout;
@@ -12,8 +12,8 @@ export class LoginPage extends React.Component {
 
         form.validateFields((err, values) => {
             if (!err) {
-                const { name, email, password } = values;
-                onSubmit( name, email, password) ;
+                const { name, email, password, admin } = values;
+                onSubmit( name, email, password, admin) ;
             }
         });
     };
@@ -32,6 +32,8 @@ export class LoginPage extends React.Component {
         });
         const passwordFieldDecorator = getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your password!' }],
+        });
+        const adminFieldDecorator = getFieldDecorator('admin', {
         });
 
         return (
@@ -70,6 +72,16 @@ export class LoginPage extends React.Component {
                                             />,
                                         )}
                                     </Form.Item>
+
+                                    <Form.Item>
+                                        {adminFieldDecorator(
+                                            <div style={{display:'flex', flexDirection:'row' }}>   
+                                            <Checkbox  style={{marginRight:10}} />  
+                                            <p>Admin</p>
+                                            </div>
+                                        )}
+                                    </Form.Item>
+
                                     <Form.Item>
                                         <Button block type="primary" htmlType="submit">
                                             Sign Up

@@ -1,6 +1,6 @@
 import { url } from '../config/config'
 
-const signup = async ({name, email, password }) => {
+const signup = async ({name, email, password, admin }) => {
 
     try {
       let response = await fetch(url + 'user/signup', {
@@ -10,7 +10,7 @@ const signup = async ({name, email, password }) => {
           'Content-Type': 'application/json',
           // Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({name, email , password})
+        body: JSON.stringify({name, email , password, admin})
       })
       return await response.json()
     } catch (err) {

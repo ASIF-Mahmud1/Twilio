@@ -62,9 +62,9 @@ class ConversationsApp extends React.Component {
     }
   };
 
-  signUp = async (name, email, password) => {
-    console.log("Make API call to Sign UP", {name, email, password});
-    const result= await signup({name, email, password})
+  signUp = async (name, email, password, admin) => {
+    console.log("Make API call to Sign UP", {name, email, password, admin});
+    const result= await signup({name, email, password, admin})
     
     if(!result.error)
     {
