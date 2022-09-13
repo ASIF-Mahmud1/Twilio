@@ -109,7 +109,6 @@ const ConversationsApp =()=>{
     // Paste your unique Chat token function
     
     const {twilioToken} = await  signin({email:values.email, password:values.password}) //"<Your token here>";
-    console.log(twilioToken);
    if(twilioToken)
    {
      localStorage.setItem("email",values.email);
@@ -196,9 +195,7 @@ const ConversationsApp =()=>{
 
   const handleAddParticipant= async({sid})=>{
     const identity= values.email
-    console.log({sid, identity});
     const result= await addParticipant({sid, identity})
-    console.log(result);
     if(result.conversation)
     {
       //alert(result.message)
@@ -222,7 +219,8 @@ const ConversationsApp =()=>{
       }
     })
 
-    console.log("UnSubcribed Conversations: ", unSubscribedConversations.length);
+ 
+
     ///////////////////////////////////////////////////////////////
     const selectedConversation = conversations.find(
       (it) => it.sid === selectedConversationSid

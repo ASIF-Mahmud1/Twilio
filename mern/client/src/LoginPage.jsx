@@ -19,7 +19,7 @@ export class LoginPage extends React.Component {
     };
 
     showSignUp=()=>{
-        console.log("trigerred");
+        
         this.props.toggleSignUp()
     }
 
