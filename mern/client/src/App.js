@@ -1,5 +1,5 @@
 import React from 'react';
-import ConversationsApp from './ConversationsApp';
+import ConversationsApp from './containers/Dashboard';
 import './assets/App.css';
 import 'antd/dist/antd.css';
 
