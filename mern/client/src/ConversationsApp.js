@@ -55,12 +55,6 @@ const ConversationsApp =()=>{
     }
   },[values.loggedIn, values.token])
 
-  useEffect(()=>{
-    if(values.selectedConversationSid)
-    {
-      handleAddParticipant(values.selectedConversationSid)
-    }
-  },[values.selectedConversationSid])
 
 
   const toggleSignUp = () => {
@@ -329,6 +323,7 @@ const ConversationsApp =()=>{
                   conversations={unSubscribedConversations}
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
+                    handleAddParticipant(item)
                     setValues((prevState)=>({...prevState,
                       selectedConversationSid: item.sid
                     }))
