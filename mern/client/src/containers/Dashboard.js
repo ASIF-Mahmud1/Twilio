@@ -4,18 +4,18 @@ import { Client as ConversationsClient } from "@twilio/conversations";
 
 import ".././assets/Conversation.css";
 import ".././assets/ConversationSection.css";
-import { ReactComponent as Logo } from ".././assets/twilio-mark-red.svg";
 
 import Conversation from "../components/conversation/Conversation";
 import LoginPage from "../components/auth/LoginPage";
 import SignUpPage from "../components/users/SignUp";
-import { ConversationsList } from "../components/conversation/ConversationsList";
-import { HeaderItem } from "../components/utils/HeaderItem";
 import { getTwilioToken, signin } from "../api/auth.api";
 import { list, addParticipant } from "../api/conversation.api";
 import { signup } from "../api/user-api";
-const { Content, Sider, Header } = Layout;
-const { Text } = Typography;
+import TopBar from "../components/conversation/TopBar";
+import SideBar from "../components/conversation/SideBar";
+
+const { Content } = Layout;
+
 let conversationsClient =null
 const ConversationsApp =()=>{
 
@@ -244,90 +244,20 @@ const ConversationsApp =()=>{
       return (
         <div className="conversations-window-wrapper">
           <Layout className="conversations-window-container">
-            <Header
-              style={{ display: "flex", alignItems: "center", padding: 0 }}
-            >
-              <div
-                style={{
-                  maxWidth: "250px",
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center"
-                }}
-              >
-                <HeaderItem style={{ paddingRight: "0", display: "flex" }}>
-                  <Logo />
-                </HeaderItem>
-                <HeaderItem>
-                  <Text strong style={{ color: "white" }}>
-                    Conversations
-                  </Text>
-                </HeaderItem>
-              </div>
-              <div style={{ display: "flex", width: "100%" }}>
-                <HeaderItem>
-                  <Text strong style={{ color: "white" }}>
-                    {selectedConversation &&
-                      (selectedConversation.friendlyName || selectedConversation.sid)}
-                  </Text>
-                </HeaderItem>
-                <HeaderItem style={{ float: "right", marginLeft: "auto" }}>
-                  <span
-                    style={{ color: "white" }}
-                  >{` ${values.statusString}`}</span>
-                  <Badge
-                    dot={true}
-                    status={values.status}
-                    style={{ marginLeft: "1em" }}
-                  />
-                </HeaderItem>
-                <HeaderItem>
-                  <Icon
-                    type="poweroff"
-                    onClick={logOut}
-                    style={{
-                      color: "white",
-                      fontSize: "20px",
-                      marginLeft: "auto"
-                    }}
-                  />
-                </HeaderItem>
-              </div>
-            </Header>
+            <TopBar  selectedConversation={selectedConversation} values={values} logOut={logOut} />
             <Layout>
-              <Sider theme={"light"} width={250}>
-                <ConversationsList
-                  header={"Open Conversation"}
-                  added={true}
-                  conversations={conversations}
-                  selectedConversationSid={selectedConversationSid}
-                  onConversationClick={(item) => {
-                    setValues((prevState)=>({...prevState,
-                      selectedConversationSid: item.sid 
-                    }))
-                   
-                  }}
-                />
-              </Sider>
+               <SideBar conversations= {conversations} selectedConversationSid={selectedConversationSid} handleParentState={ (item)=> setValues((prevState)=>({...prevState, selectedConversationSid: item.sid  }))}  />
             
               <Content className="conversation-section">
                 <div id="SelectedConversation">{conversationContent}</div>
               </Content>
-              <Sider theme={"light"} width={250}>
-
-                <ConversationsList
-                  header={"Not Added with You"}
-                  added={false}
-                  conversations={unSubscribedConversations}
-                  selectedConversationSid={selectedConversationSid}
-                  onConversationClick={(item) => {
-                    handleAddParticipant(item)
-                    setValues((prevState)=>({...prevState,
-                      selectedConversationSid: item.sid
-                    }))
-                  }}
-                />
-              </Sider>
+            
+              <SideBar conversations= {unSubscribedConversations} selectedConversationSid={selectedConversationSid} handleParentState={(item)=>{
+                  handleAddParticipant(item)
+                  setValues((prevState)=>({...prevState,
+                    selectedConversationSid: item.sid
+                  }))
+              }} />
             </Layout>
           </Layout>
         </div>
@@ -340,5 +270,7 @@ const ConversationsApp =()=>{
     return <LoginPage onSubmit={logIn} toggleSignUp={toggleSignUp} />;
   
 }
+
+
 
 export default ConversationsApp;
