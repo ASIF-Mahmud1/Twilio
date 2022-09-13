@@ -2,8 +2,8 @@ import React, { Component, PureComponent } from "react";
 import styles from '../../assets/MessageBubble.module.css'
 import PropTypes from "prop-types";
 import { Spin, Modal, Icon } from "antd";
-import WhatsappIcon from "../../WhatsappIcon";
-import ChatIcon from "../../ChatIcon";
+import WhatsappIcon from "../../assets/icons/WhatsappIcon";
+import ChatIcon from "../../assets/icons/ChatIcon";
 
 class MessageBubble extends Component {
   constructor(props) {
