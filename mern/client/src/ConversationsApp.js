@@ -182,13 +182,13 @@ const ConversationsApp =()=>{
 
     conversationsClient.on("conversationJoined", (conversation) => {
       setValues((prevState)=>({...prevState,
-        conversations: [...values.conversations, conversation]
+        conversations: [...prevState.conversations, conversation]
       }))
       
     });
     conversationsClient.on("conversationLeft", (thisConversation) => {
       setValues((prevState)=>({...prevState,
-        conversations: [...values.conversations.filter((it) => it !== thisConversation)]
+        conversations: [...prevState.conversations.filter((it) => it !== thisConversation)]
       }))
     });
   };
