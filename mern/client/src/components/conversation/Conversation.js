@@ -92,8 +92,12 @@ const Conversation =(props)=>  {
   };
 
  const onMessageChanged = event => {
+   event.persist();
+   console.log(values.loadingState);
+   
+
     setValues((prevState)=>({...prevState,
-      newMessage: event.target.value 
+      newMessage: event.target?.value
     }))
 
   };
