@@ -58,8 +58,8 @@ const Conversation =(props)=>  {
 
 
   useEffect(()=>{
-    if (values.conversationProxy !== oldState.conversationProxy) {
-      this.loadMessagesFor(values.conversationProxy);
+    if (values.conversationProxy !== oldState?.conversationProxy) {
+      loadMessagesFor(values.conversationProxy);
 
       if (!values.boundConversations.has(values.conversationProxy)) {
           let newConversation = values.conversationProxy;
@@ -71,16 +71,15 @@ const Conversation =(props)=>  {
       }
   }
 
-  },[values.conversationProxy])
+  let logic = (oldState?.loadingState === 'initializing') || oldState?.conversationProxy !== props.conversationProxy;
+  if (logic) {
+    setValues((prevState)=>({...prevState,
+      loadingState: 'loading messages', conversationProxy: props.conversationProxy 
+    }))
+  } 
 
-  // static getDerivedStateFromProps(newProps, oldState) {
-  //   let logic = (oldState.loadingState === 'initializing') || oldState.conversationProxy !== newProps.conversationProxy;
-  //   if (logic) {
-  //     return { loadingState: 'loading messages', conversationProxy: newProps.conversationProxy };
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  },[values.conversationProxy,  props.conversationProxy])
+
 
   const messageAdded = (message, targetConversation) => {
     if (targetConversation === values.conversationProxy)
@@ -92,14 +91,14 @@ const Conversation =(props)=>  {
       
   };
 
-  onMessageChanged = event => {
+ const onMessageChanged = event => {
     setValues((prevState)=>({...prevState,
       newMessage: event.target.value 
     }))
 
   };
 
-  sendMessage = event => {
+  const sendMessage = event => {
     event.preventDefault();
     const message = values.newMessage;
     setValues((prevState)=>({...prevState,
@@ -108,14 +107,14 @@ const Conversation =(props)=>  {
     values.conversationProxy.sendMessage(message);
   };
 
-  onDrop = acceptedFiles => {
+  const onDrop = acceptedFiles => {
     values.conversationProxy.sendMessage({contentType: acceptedFiles[0].type, media: acceptedFiles[0]});
   };
 
 
     return (
         <Dropzone
-            onDrop={this.onDrop}
+            onDrop={onDrop}
             accept="image/*">
           {({getRootProps, getInputProps, isDragActive}) => (
               <div
@@ -141,11 +140,11 @@ const Conversation =(props)=>  {
                   <input id="files" {...getInputProps()} />
                   <div style={{flexBasis: "100%", flexGrow: 2, flexShrink: 1, overflowY: "scroll"}}>
                     <ConversationsMessages
-                        identity={this.props.myIdentity}
+                        identity={props.myIdentity}
                         messages={values.messages}/>
                   </div>
                   <div>
-                    <Form onSubmit={this.sendMessage}>
+                    <Form onSubmit={sendMessage}>
                       <Input.Group compact={true} style={{
                         width: "100%",
                         display: "flex",
@@ -159,7 +158,7 @@ const Conversation =(props)=>  {
                             id={styles['type-a-message']}
                             autoComplete={"off"}
                             disabled={values.loadingState !== 'ready'}
-                            onChange={this.onMessageChanged}
+                            onChange={onMessageChanged}
                             value={values.newMessage}
                         />
                         <Button icon="enter" htmlType="submit" type={"submit"}/>
