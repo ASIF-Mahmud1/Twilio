@@ -26,6 +26,7 @@ const ConversationsApp =()=>{
   const [values,setValues] = useState({
     email,
     password,
+    admin:false,
     loggedIn,
     signUp:false,
     token: null,
@@ -89,6 +90,7 @@ const ConversationsApp =()=>{
     }
     setValues((prevState)=>({...prevState, 
     email:"",
+    admin:false,
     loggedIn: false,
     token: "",
     conversationsReady: false,
@@ -101,6 +103,7 @@ const ConversationsApp =()=>{
  
     localStorage.removeItem("email");
     localStorage.removeItem("password");
+    localStorage.removeItem("admin");
     conversationsClient.shutdown();
   };
 
@@ -108,12 +111,14 @@ const ConversationsApp =()=>{
   const getToken = async() => {
     // Paste your unique Chat token function
     
-    const {twilioToken} = await  signin({email:values.email, password:values.password}) //"<Your token here>";
+    const {twilioToken, user} = await  signin({email:values.email, password:values.password}) //"<Your token here>";
    if(twilioToken)
    {
+     const{admin}= user
      localStorage.setItem("email",values.email);
      localStorage.setItem("password", values.password);
-     setValues((prevState)=>({...prevState,token: twilioToken , loggedIn: true }))
+     localStorage.setItem("admin", admin);
+     setValues((prevState)=>({...prevState,token: twilioToken , admin, loggedIn: true }))
 
    
      const conversationsFromServer= await list()
@@ -204,7 +209,7 @@ const ConversationsApp =()=>{
 
 
   
-    const { conversations,allConversations, selectedConversationSid, status } = values;
+    const { conversations,allConversations, selectedConversationSid, status, admin} = values;
     /////////////////////////////////////////////////////////////////
 
    const unSubscribedConversations= allConversations.filter((item)=>{
@@ -252,12 +257,16 @@ const ConversationsApp =()=>{
                 <div id="SelectedConversation">{conversationContent}</div>
               </Content>
             
+            {
+               admin== true && 
+            
               <SideBar conversations= {unSubscribedConversations} selectedConversationSid={selectedConversationSid} handleParentState={(item)=>{
                   handleAddParticipant(item)
                   setValues((prevState)=>({...prevState,
                     selectedConversationSid: item.sid
                   }))
               }} />
+            }
             </Layout>
           </Layout>
         </div>
