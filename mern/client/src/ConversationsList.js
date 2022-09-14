@@ -37,7 +37,11 @@ export class ConversationsList extends React.Component {
                                 className={conversationsItemStyles['conversation-item-text']}
                                 style={activeChannel? {color:'white' } : {color:'black'}}
                             >
-                                {item.friendlyName || item.sid}
+    
+                            {
+
+                                item.uniqueName===localStorage.getItem("email") ?  "Customer Service" :  item.friendlyName || item.sid
+                            }
                             </Text>
                             <Button   onClick={() => onConversationClick(item)}>
                                 {

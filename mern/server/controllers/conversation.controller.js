@@ -8,24 +8,27 @@ const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const create = async (req, res, next) => {
    const user = req.user
 
-   const result = await client.conversations.v1.conversations
-      .create({ friendlyName: req.body.email })
-
-   if (result.sid) 
+   if(user.admin !==true)  // create connection automatically, if user is not admin
    {
-      const first_participant = await client.conversations.v1.conversations(result.sid)
-         .participants
-         .create({ identity: req.body.email })
+      const result = await client.conversations.v1.conversations
+         .create({ uniqueName: user.email, friendlyName: user.name, })
 
-      console.log("First Participant ", first_participant);
+      if (result.sid) {
+         const first_participant = await client.conversations.v1.conversations(result.sid)
+            .participants
+            .create({ identity: req.body.email })
 
-      const second_participant = await client.conversations.v1.conversations(result.sid)
-         .participants
-         .create({ identity: "admin@gmail.com" })
+         console.log("First Participant ", first_participant);
 
-      console.log("Second Participant ", first_participant);
+         const second_participant = await client.conversations.v1.conversations(result.sid)
+            .participants
+            .create({ identity: "admin@gmail.com" })
 
+         console.log("Second Participant ", first_participant);
+
+      }
    }
+
 
    res.status(201).send({
       message: "User Created Successfully",

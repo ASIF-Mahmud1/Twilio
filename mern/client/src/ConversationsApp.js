@@ -29,6 +29,7 @@ class ConversationsApp extends React.Component {
 
       email,
       password,
+      admin:false,
       loggedIn,
       signUp:false,
       token: null,
@@ -81,6 +82,7 @@ class ConversationsApp extends React.Component {
     this.setState({
      
       email:"",
+      admin:false,
       loggedIn: false,
       token: "",
       conversationsReady: false,
@@ -92,18 +94,23 @@ class ConversationsApp extends React.Component {
 
     localStorage.removeItem("email");
     localStorage.removeItem("password");
+    localStorage.removeItem("admin");
     this.conversationsClient.shutdown();
   };
 
   getToken = async() => {
     // Paste your unique Chat token function
     
-    const {twilioToken} = await  signin({email:this.state.email, password: this.state.password}) //"<Your token here>";
+    const {twilioToken ,user } = await  signin({email:this.state.email, password: this.state.password}) //"<Your token here>";
    if(twilioToken)
    {
+     const{admin}= user
      localStorage.setItem("email", this.state.email);
      localStorage.setItem("password", this.state.password);
-     this.setState({ token: twilioToken , loggedIn: true}, this.initConversations);
+     localStorage.setItem("admin", admin);
+
+
+     this.setState({ token: twilioToken , admin, loggedIn: true}, this.initConversations);
      const conversationsFromServer= await list()
      console.log("more ", conversationsFromServer);
      if(conversationsFromServer.conversation)
@@ -173,7 +180,7 @@ class ConversationsApp extends React.Component {
 
   render() {
   
-    const { conversations,allConversations, selectedConversationSid, status } = this.state;
+    const { conversations,allConversations, selectedConversationSid, status, admin } = this.state;
     /////////////////////////////////////////////////////////////////
 
    const unSubscribedConversations= allConversations.filter((item)=>{
@@ -278,20 +285,27 @@ class ConversationsApp extends React.Component {
               <Content className="conversation-section">
                 <div id="SelectedConversation">{conversationContent}</div>
               </Content>
-              <Sider theme={"light"} width={250}>
 
-                <ConversationsList
-                  header={"Not Added with You"}
-                  added={false}
-                  conversations={unSubscribedConversations}
-                  selectedConversationSid={selectedConversationSid}
-                  onConversationClick={(item) => {
-                   this.setState({ selectedConversationSid: item.sid },()=>{
-                     this.handleAddParticipant(item)
-                   });
-                  }}
-                />
-              </Sider>
+              {
+                admin== true &&
+              
+                
+                <Sider theme={"light"} width={250}>
+            
+<ConversationsList
+  header={"Not Added with You"}
+  added={false}
+  conversations={unSubscribedConversations}
+  selectedConversationSid={selectedConversationSid}
+  onConversationClick={(item) => {
+    this.setState({ selectedConversationSid: item.sid }, () => {
+      this.handleAddParticipant(item)
+    });
+  }}
+/>
+</Sider>
+    }
+        
             </Layout>
           </Layout>
         </div>
