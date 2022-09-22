@@ -3,9 +3,10 @@ import './assets/Conversation.css';
 import MessageBubble from './MessageBubble'
 import Dropzone from 'react-dropzone';
 import styles from './assets/Conversation.module.css'
-import {Button, Form, Icon, Input} from "antd";
+import {Button, Form, Icon, Input,Typography} from "antd";
 import ConversationsMessages from "./ConversationsMessages";
 import PropTypes from "prop-types";
+const { Text } = Typography;
 
 class Conversation extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Conversation extends Component {
         conversationProxy: props.conversationProxy,
         messages: [],
         loadingState: 'initializing',
-        boundConversations: new Set()
+        boundConversations: new Set(),
+        typing:false
     };
   }
 
@@ -41,6 +43,19 @@ class Conversation extends Component {
         if (!this.state.boundConversations.has(this.state.conversationProxy)) {
             let newConversation = this.state.conversationProxy;
             newConversation.on('messageAdded', m => this.messageAdded(m, newConversation));
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+          newConversation.on('typingStarted', (member)=> {
+        
+            this.setState({typing: true})
+            }  );
+            
+            newConversation.on('typingEnded',  (member)=> {
+             
+              this.setState({typing: false})
+            } );
+  
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
             this.setState({boundConversations: new Set([...this.state.boundConversations, newConversation])});
         }
       }
@@ -76,6 +91,8 @@ class Conversation extends Component {
 
   onMessageChanged = event => {
     this.setState({ newMessage: event.target.value });
+    this.state.conversationProxy.typing()
+
   };
 
   sendMessage = event => {
@@ -117,9 +134,15 @@ class Conversation extends Component {
                 >
                   <input id="files" {...getInputProps()} />
                   <div style={{flexBasis: "100%", flexGrow: 2, flexShrink: 1, overflowY: "scroll"}}>
+                   
                     <ConversationsMessages
                         identity={this.props.myIdentity}
                         messages={this.state.messages}/>
+                        {
+                          this.state.typing && 
+                           <Text>Typing...</Text>
+
+                        }
                   </div>
                   <div>
                     <Form onSubmit={this.sendMessage}>
