@@ -49,7 +49,7 @@ class Conversation extends Component {
         
             this.setState({typing: true})
             }  );
-            
+
             newConversation.on('typingEnded',  (member)=> {
              
               this.setState({typing: false})
@@ -138,13 +138,12 @@ class Conversation extends Component {
                     <ConversationsMessages
                         identity={this.props.myIdentity}
                         messages={this.state.messages}/>
-                        {
-                          this.state.typing && 
-                           <Text>Typing...</Text>
-
-                        }
+                       
                   </div>
                   <div>
+                  {
+                          this.state.typing ?   <Text>Typing...</Text> : <Text></Text>
+                  }
                     <Form onSubmit={this.sendMessage}>
                       <Input.Group compact={true} style={{
                         width: "100%",
