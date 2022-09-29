@@ -43,9 +43,20 @@ const getTwilioToken=(req,res)=>{
   })
 }
 
+const getLiveVideoTwilioToken=(req,res)=>{
+  const {email, room} =req.body
+  const token= twilio.getLiveVideoToken({email: email, room:room})
+  return res.json({
+    twilioToken: token
+   
+  })
+}
+
+
 
 module.exports= {
   signin:signin,
-  getTwilioToken:getTwilioToken
+  getTwilioToken:getTwilioToken, 
+  getLiveVideoTwilioToken:getLiveVideoTwilioToken
 
 }

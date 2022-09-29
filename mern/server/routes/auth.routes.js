@@ -8,6 +8,9 @@ router.route('/login')
 router.route('/twilioToken')
   .post(authCtrl.getTwilioToken)
 
+router.route('/liveVideoTwilioToken')
+  .post(authCtrl.getLiveVideoTwilioToken)
+
 module.exports = {
   authRoutes: router
 }
