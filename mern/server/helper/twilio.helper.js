@@ -41,13 +41,11 @@ const getToken =({email})=>{
    
 }
 
-const getLiveVideoToken =({email, room})=>{  
-
+const getLiveVideoToken =({identity, room})=>{  
   const twilioAccountSid =process.env.TWILIO_ACCOUNT_SID;
   const twilioApiKey =  process.env.TWILIO_API_KEY
   const twilioApiSecret = process.env.TWILIO_API_SECRET
 
-  const identity = email;
   const videoGrant=  new VideoGrant({
     room: room // the specific room's name
   });

@@ -36,9 +36,28 @@ const getTwilioToken = async ({ email }) => {
   }
 }  
 
+const getTwilioTokenVideo = async ({ identity, room}) => {
+
+  try {
+    let response = await fetch(url + 'auth/liveVideoTwilioToken', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({identity, room })
+    })
+    return await response.json()
+  } catch (err) {
+    console.log(err)
+  }
+}  
+
 
 
 export{
     signin,
-    getTwilioToken
+    getTwilioToken,
+    getTwilioTokenVideo
 }

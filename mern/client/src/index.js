@@ -5,7 +5,7 @@ import ChatRoot from './conversation/App';
 import VideoRoot from './video/App'
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<ChatRoot />, document.getElementById('root'));
+ReactDOM.render(<VideoRoot />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

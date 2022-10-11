@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
 import Lobby from "./Lobby";
 import Room from "./Room";
+import {getTwilioTokenVideo} from'../api/auth.api'
 
 const VideoChat = () => {
   const [username, setUsername] = useState("Admin");
@@ -21,27 +22,55 @@ const VideoChat = () => {
     async (event) => {
       event.preventDefault();
       setConnecting(true);
-      const data = await fetch("/video/token", {
-        method: "POST",
-        body: JSON.stringify({
-          identity: username,
-          room: roomName,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((res) => res.json());
-      Video.connect(data.token, {
-        name: roomName,
-      })
-        .then((room) => {
-          setConnecting(false);
-          setRoom(room);
-        })
-        .catch((err) => {
-          console.error(err);
-          setConnecting(false);
-        });
+      try {
+        const data = await getTwilioTokenVideo({ identity: username, room: roomName })
+        if(!data.error)
+        {
+          console.log("Apart ", data);
+          Video.connect(data.twilioToken, {
+            name: roomName,
+          })
+            .then((room) => {
+              setConnecting(false);
+              setRoom(room);
+            })
+            .catch((err) => {
+              console.error(err);
+              setConnecting(false);
+            });
+        }
+        else
+        {
+
+        }
+      } catch (error) {
+        
+      }
+   
+      //////////////////////////////////////////////////
+      // fetch("/video/token", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     identity: username,
+      //     room: roomName,
+      //   }),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // }).then((res) => res.json());
+      // Video.connect(data.token, {
+      //   name: roomName,
+      // })
+      //   .then((room) => {
+      //     setConnecting(false);
+      //     setRoom(room);
+      //   })
+      //   .catch((err) => {
+      //     console.error(err);
+      //     setConnecting(false);
+      //   });
+      //////////////////////////////////////////////////
+
     },
     [roomName, username]
   );

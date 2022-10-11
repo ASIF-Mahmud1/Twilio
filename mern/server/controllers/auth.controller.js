@@ -44,8 +44,8 @@ const getTwilioToken=(req,res)=>{
 }
 
 const getLiveVideoTwilioToken=(req,res)=>{
-  const {email, room} =req.body
-  const token= twilio.getLiveVideoToken({email: email, room:room})
+  const {identity, room} =req.body
+  const token= twilio.getLiveVideoToken({identity, room})
   return res.json({
     twilioToken: token
    
