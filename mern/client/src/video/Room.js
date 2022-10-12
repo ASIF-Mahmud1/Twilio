@@ -69,8 +69,8 @@ const Room = ({ roomName, room, handleLogout }) => {
     <>
         <div style={{display:'flex', flexDirection:'column',borderWidth:1, borderColor:'red'}}>
        <br/>
-       <button onClick={handleAudio}>Enable Audio</button><br/>
-      <button onClick={handleVideo}>Enable Video</button>
+       <button onClick={handleAudio}>Audio is {audioEnabled? "ON":"OFF"}</button><br/>
+      <button onClick={handleVideo}>Video is {videoEnabled? "ON":"OFF"}</button>
    
        <br/>
       </div>
