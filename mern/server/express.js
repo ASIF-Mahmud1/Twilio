@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.static('public'))
 
 // add routes
-app.use('/auth', coreRoutes)
+app.use('/', coreRoutes)
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/conversation', conversationRoutes)
