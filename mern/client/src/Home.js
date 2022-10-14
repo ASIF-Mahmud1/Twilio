@@ -15,15 +15,19 @@ export class Home extends React.Component {
             showVideoCall: false,
         };
     }
-
-    show = (component) => {
-        if (component === 'chat') {
+    componentDidMount=()=>{
+        if(window.location.pathname==="/chat")
+        {
             this.setState({ showConversation: true })
         }
-        if (component === 'video') {
+        if(window.location.pathname==="/video")
+        {
             this.setState({ showVideoCall: true })
         }
+    }
 
+    show = (component) => {
+        window.location.href ="/"+component
     }
 
     render() {
