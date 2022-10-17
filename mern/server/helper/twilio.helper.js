@@ -3,7 +3,7 @@ require("dotenv").config();
 
 
 const AccessToken = require('twilio').jwt.AccessToken;
-const {VideoGrant} = AccessToken
+const {VideoGrant,ChatGrant} = AccessToken
 const getToken =({email})=>{
 
     const ChatGrant = AccessToken.ChatGrant;
@@ -45,7 +45,12 @@ const getLiveVideoToken =({identity, room})=>{
   const twilioAccountSid =process.env.TWILIO_ACCOUNT_SID;
   const twilioApiKey =  process.env.TWILIO_API_KEY
   const twilioApiSecret = process.env.TWILIO_API_SECRET
-
+  // Used specifically for creating Chat tokens
+  const serviceSid = process.env.TWILIO_CHAT_SERVICE_SID 
+  
+  const chatGrant = new ChatGrant({
+    serviceSid: serviceSid,
+  });
   const videoGrant=  new VideoGrant({
     room: room // the specific room's name
   });
@@ -57,6 +62,7 @@ const getLiveVideoToken =({identity, room})=>{
     { identity: identity }
   );
   token.addGrant(videoGrant);
+  token.addGrant(chatGrant);
 
   return token.toJwt()
 }
