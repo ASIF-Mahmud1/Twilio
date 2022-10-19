@@ -82,10 +82,25 @@ const getVerificationCode = async (phoneNumber) => {
 
 }
 
+const verifyOTPCode= async(phoneNumber,otp)=>{
+  try {
+    console.log("Verify OTP ",phoneNumber, otp);
+    const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+    const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN
+    const twilioVerifyServiceId = process.env.TWILIO_VERIFY_SERVICE_SID
+    const client = new twilio(twilioAccountSid, twilioAuthToken)
+
+    const result = await client.verify.services(twilioVerifyServiceId).verificationChecks.create({ to:phoneNumber, code:otp })
+    return result
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports= {
     getToken: getToken,
     getLiveVideoToken,getLiveVideoToken,
-    getVerificationCode:getVerificationCode
-  
+    getVerificationCode:getVerificationCode,
+    verifyOTPCode:verifyOTPCode
   }
 

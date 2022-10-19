@@ -65,11 +65,25 @@ const getVerficationTwilio = async (req, res) => {
 
 }
 
+const checkVerficationTwilio = async (req, res) => {
+  const phoneNumber = req.params.phoneNumber
+  const otp = req.params.otp
+  try {
+    const result = await twilio.verifyOTPCode(phoneNumber, otp)
+    return res.json({
+      result
+    })
+  } catch (error) {
+    return res.json({ error })
+  }
+
+}
 
 module.exports= {
   signin:signin,
   getTwilioToken:getTwilioToken, 
   getLiveVideoTwilioToken:getLiveVideoTwilioToken,
-  getVerficationTwilio:getVerficationTwilio
+  getVerficationTwilio:getVerficationTwilio,
+  checkVerficationTwilio:checkVerficationTwilio
 
 }

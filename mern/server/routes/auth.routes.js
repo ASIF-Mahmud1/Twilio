@@ -11,8 +11,11 @@ router.route('/twilioToken')
 router.route('/liveVideoTwilioToken')
   .post(authCtrl.getLiveVideoTwilioToken)
 
-router.route('/verify/:phoneNumber')
-  .post(authCtrl.getVerficationTwilio)
+router.route('/getVerificatinCode/:phoneNumber')
+  .get(authCtrl.getVerficationTwilio)
+
+router.route('/checkVerificatinCode/:phoneNumber/:otp')
+  .get(authCtrl.checkVerficationTwilio)
 
 module.exports = {
   authRoutes: router
