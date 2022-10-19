@@ -67,22 +67,21 @@ const getLiveVideoToken =({identity, room})=>{
   return token.toJwt()
 }
 
-const getVerificationCode= async (phoneNumber)=>{
+const getVerificationCode = async (phoneNumber) => {
   try {
-    
-    const twilioAccountSid =process.env.TWILIO_ACCOUNT_SID;
-    const twilioAuthToken =  process.env.TWILIO_AUTH_TOKEN
-    const twilioVerifyServiceId =process.env.TWILIO_VERIFY_SERVICE_SID
+    const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+    const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN
+    const twilioVerifyServiceId = process.env.TWILIO_VERIFY_SERVICE_SID
     const client = new twilio(twilioAccountSid, twilioAuthToken)
-    const result = await client.verify.services(twilioVerifyServiceId).verifications.create({ to:"+8801924458496", channel: 'sms' })
-    console.log("result ", result);
+
+    const result = await client.verify.services(twilioVerifyServiceId).verifications.create({ to: phoneNumber, channel: 'sms' })
     return result
   } catch (error) {
-    console.log("Error ",error);
-    return error
+    throw error
   }
 
 }
+
 module.exports= {
     getToken: getToken,
     getLiveVideoToken,getLiveVideoToken,

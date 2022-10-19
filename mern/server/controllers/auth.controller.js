@@ -52,13 +52,17 @@ const getLiveVideoTwilioToken=(req,res)=>{
   })
 }
 
-const getVerficationTwilio=(req,res)=>{
-  const to = req.params.to
-  console.log("Phone Number ",to);
-  const result= twilio.getVerificationCode(to)
-   return res.json({
-    result 
-   })
+const getVerficationTwilio = async (req, res) => {
+  const phoneNumber = req.params.phoneNumber
+  try {
+    const result = await twilio.getVerificationCode(phoneNumber)
+    return res.json({
+      result
+    })
+  } catch (error) {
+    return res.json({ error })
+  }
+
 }
 
 
