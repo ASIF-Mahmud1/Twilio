@@ -1,7 +1,7 @@
 require("dotenv").config();
 //console.log(process.env) 
 
-
+const twilio = require('twilio')
 const AccessToken = require('twilio').jwt.AccessToken;
 const {VideoGrant,ChatGrant} = AccessToken
 const getToken =({email})=>{
@@ -67,9 +67,26 @@ const getLiveVideoToken =({identity, room})=>{
   return token.toJwt()
 }
 
+const getVerificationCode= async (phoneNumber)=>{
+  try {
+    
+    const twilioAccountSid =process.env.TWILIO_ACCOUNT_SID;
+    const twilioAuthToken =  process.env.TWILIO_AUTH_TOKEN
+    const twilioVerifyServiceId =process.env.TWILIO_VERIFY_SERVICE_SID
+    const client = new twilio(twilioAccountSid, twilioAuthToken)
+    const result = await client.verify.services(twilioVerifyServiceId).verifications.create({ to:"+8801924458496", channel: 'sms' })
+    console.log("result ", result);
+    return result
+  } catch (error) {
+    console.log("Error ",error);
+    return error
+  }
+
+}
 module.exports= {
     getToken: getToken,
-    getLiveVideoToken,getLiveVideoToken
+    getLiveVideoToken,getLiveVideoToken,
+    getVerificationCode:getVerificationCode
   
   }
 

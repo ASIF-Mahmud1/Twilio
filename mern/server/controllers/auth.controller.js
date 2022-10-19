@@ -52,11 +52,20 @@ const getLiveVideoTwilioToken=(req,res)=>{
   })
 }
 
+const getVerficationTwilio=(req,res)=>{
+  const to = req.params.to
+  console.log("Phone Number ",to);
+  const result= twilio.getVerificationCode(to)
+   return res.json({
+    result 
+   })
+}
 
 
 module.exports= {
   signin:signin,
   getTwilioToken:getTwilioToken, 
-  getLiveVideoTwilioToken:getLiveVideoTwilioToken
+  getLiveVideoTwilioToken:getLiveVideoTwilioToken,
+  getVerficationTwilio:getVerficationTwilio
 
 }

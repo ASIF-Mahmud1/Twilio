@@ -11,6 +11,9 @@ router.route('/twilioToken')
 router.route('/liveVideoTwilioToken')
   .post(authCtrl.getLiveVideoTwilioToken)
 
+router.route('/verify/:to')
+   .post(authCtrl.getVerficationTwilio)
+
 module.exports = {
   authRoutes: router
 }
