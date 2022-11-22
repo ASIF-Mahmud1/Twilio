@@ -2,8 +2,8 @@ const HITPAY_API_KEY= process.env.HITPAY_API_KEY
 
 
 const requestPaymentURL =async (req,res, next)=>{
-
-  const url='https://api.sandbox.hit-pay.com/v1/payment-requests?redirect_url=https://test.com/success&webhook=https://test.com/webhook&amount=600&currency=SGD'
+  const {amount, currency, email}= req.body
+  const url= `https://api.sandbox.hit-pay.com/v1/payment-requests?amount=${amount}&currency=${currency}&email=${email}`
 
   try {
     const response =await fetch(url , {
