@@ -3,6 +3,7 @@ import { Layout, Button, Form, Row, Col, Card } from 'antd';
 import { ReactComponent as Logo } from './conversation/assets/twilio-logo-red.svg';
 import ChatRoot from './conversation/App';
 import VideoRoot from './video/App'
+import SyncRoot from './sync/SyncApp';
 
 const { Content } = Layout;
 
@@ -13,6 +14,7 @@ export class Home extends React.Component {
         this.state = {
             showConversation: false,
             showVideoCall: false,
+            showSync:false
         };
     }
     componentDidMount=()=>{
@@ -24,6 +26,10 @@ export class Home extends React.Component {
         {
             this.setState({ showVideoCall: true })
         }
+        if(window.location.pathname==="/sync")
+        {
+            this.setState({ showSync: true })
+        }
     }
 
     show = (component) => {
@@ -31,7 +37,7 @@ export class Home extends React.Component {
     }
 
     render() {
-        if (this.state.showConversation === false && this.state.showVideoCall === false) {
+        if (this.state.showConversation === false && this.state.showVideoCall === false && this.state.showSync === false) {
             return <ChooseApplication show={this.show} />
         }
 
@@ -41,6 +47,9 @@ export class Home extends React.Component {
 
         if (this.state.showVideoCall) {
             return <VideoRoot />
+        }
+        if (this.state.showSync) {
+            return <SyncRoot />
         }
 
     }
@@ -68,6 +77,11 @@ const ChooseApplication = ({ show }) => {
                             <Form.Item>
                                 <Button block type="secondary" onClick={() => { show("video") }}>
                                     Video Call
+                                </Button>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button block type="secondary" onClick={() => { show("sync") }}>
+                                   Sync
                                 </Button>
                             </Form.Item>
 
