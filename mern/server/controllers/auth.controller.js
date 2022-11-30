@@ -43,6 +43,15 @@ const getTwilioToken=(req,res)=>{
   })
 }
 
+const getSyncTwilioToken=(req,res)=>{
+
+  const token= twilio.getTwilioSyncToken({email:req.body.email})
+  return res.json({
+    twilioToken: token,
+   
+  })
+}
+
 const getLiveVideoTwilioToken=(req,res)=>{
   const {identity, room} =req.body
   const token= twilio.getLiveVideoToken({identity, room})
@@ -84,6 +93,7 @@ module.exports= {
   getTwilioToken:getTwilioToken, 
   getLiveVideoTwilioToken:getLiveVideoTwilioToken,
   getVerficationTwilio:getVerficationTwilio,
-  checkVerficationTwilio:checkVerficationTwilio
+  checkVerficationTwilio:checkVerficationTwilio,
+  getSyncTwilioToken:getSyncTwilioToken
 
 }

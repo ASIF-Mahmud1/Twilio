@@ -11,6 +11,9 @@ router.route('/twilioToken')
 router.route('/liveVideoTwilioToken')
   .post(authCtrl.getLiveVideoTwilioToken)
 
+router.route('/syncTwilioToken')
+  .post(authCtrl.getSyncTwilioToken)  
+
 router.route('/getVerificatinCode/:phoneNumber')
   .get(authCtrl.getVerficationTwilio)
 

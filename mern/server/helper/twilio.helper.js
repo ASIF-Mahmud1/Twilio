@@ -3,7 +3,9 @@ require("dotenv").config();
 
 const twilio = require('twilio')
 const AccessToken = require('twilio').jwt.AccessToken;
-const {VideoGrant,ChatGrant} = AccessToken
+const {VideoGrant,ChatGrant, SyncGrant} = AccessToken
+
+
 const getToken =({email})=>{
 
     const ChatGrant = AccessToken.ChatGrant;
@@ -97,10 +99,33 @@ const verifyOTPCode= async(phoneNumber,otp)=>{
   }
 }
 
+const getTwilioSyncToken = ({ email }) => {
+
+  const twilioAccountSid =process.env.TWILIO_ACCOUNT_SID;
+  const twilioApiKey =  process.env.TWILIO_API_KEY
+  const twilioApiSecret = process.env.TWILIO_API_SECRET
+  const identity = email;
+
+  const syncGrant = new SyncGrant({
+    serviceSid: process.env.TWILIO_SYNC_SERVICE_SID,
+  });
+
+  const token = new AccessToken(
+    twilioAccountSid,
+    twilioApiKey,
+    twilioApiSecret,
+    { identity: identity }
+  );
+
+  token.addGrant(syncGrant);
+  return token.toJwt()
+
+}
 module.exports= {
     getToken: getToken,
     getLiveVideoToken,getLiveVideoToken,
     getVerificationCode:getVerificationCode,
-    verifyOTPCode:verifyOTPCode
+    verifyOTPCode:verifyOTPCode,
+    getTwilioSyncToken:getTwilioSyncToken
   }
 
