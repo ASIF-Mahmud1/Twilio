@@ -29,12 +29,22 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
         list.close();
     }
 
+    const handleRemoveParticipant=async(index)=>{
+      const list = await onlineUsersSyncList.remove(index)
+      
+    }
 
     return (
         <div className="participants">
         <h2>Online users:</h2>
         {
-          onlineUsers.map(p => <div key={p.index}>{p.data.name}</div>)
+          onlineUsers.map((p) =>{return(
+            <div style={{display:'flex',flex:1, flexDirection:'row'}}>
+               <div key={p.index}>{p.data.name}</div>
+               <button  onClick={()=>handleRemoveParticipant(p.index)}>Remove fromd Queue</button>
+            </div>
+          )
+        })
         }
       </div>
     )
