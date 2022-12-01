@@ -2,6 +2,18 @@ import React, { useState, useCallback, useEffect } from "react";
 import {Client as SyncClient }  from 'twilio-sync'
 import OnlineUsers from './OnlineUsers.js';
 import { getSyncTwilioToken } from "../api/auth.api.js";
+import {setUniqueId} from '../utils/helper'
+
+let info={
+ id: setUniqueId(),
+ requestedUserId:setUniqueId(),
+ requestedUserName:'',
+ roomName:'',
+ roomId:setUniqueId(),
+ onGoing:false,
+ users:[],
+ url:'',
+}
 
 const SyncApp=()=>{
     const [identity, setIdentity] = useState('');
@@ -16,7 +28,10 @@ const SyncApp=()=>{
             {
                 const syncClient = new SyncClient(result.twilioToken);
                 const SyncList = await syncClient.list('online-users');
-                const localUser = await SyncList.push({name: identity})
+                info.requestedUserName=identity
+                info.roomName= "Room for "+identity
+                info.url='www.url.meetup.'+identity
+                const localUser = await SyncList.push({name: identity, info:info})
 
                 await setLocalUser(localUser);
                 await setOnlineUsersSyncList(SyncList);

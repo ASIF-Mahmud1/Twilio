@@ -34,14 +34,17 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
       
     }
 
+    console.log("Online Users ",onlineUsers);
+    console.log("Local Users ",localUser);
+
     return (
         <div className="participants">
         <h2>Online users:</h2>
         {
           onlineUsers.map((p) =>{return(
-            <div style={{display:'flex',flex:1, flexDirection:'row'}}>
-               <div key={p.index}>{p.data.name}</div>
-               <button  onClick={()=>handleRemoveParticipant(p.index)}>Remove fromd Queue</button>
+            <div style={{display:'flex',flex:1, flexDirection:'row', alignItems:'center',}}>
+               <div key={p.index}>{p.data.name}: {p.index}</div>
+               <button onClick={()=>handleRemoveParticipant(p.index)}>Remove fromd Queue</button>
             </div>
           )
         })
