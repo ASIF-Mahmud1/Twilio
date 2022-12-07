@@ -2,18 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import {Client as SyncClient }  from 'twilio-sync'
 import OnlineUsers from './OnlineUsers.js';
 import { getSyncTwilioToken } from "../api/auth.api.js";
-import {setUniqueId} from '../utils/helper'
-
-let info={
- id: setUniqueId(),
- requestedUserId:setUniqueId(),
- requestedUserName:'',
- roomName:'',
- roomId:setUniqueId(),
- onGoing:false,
- users:[],
- url:'',
-}
+import { info } from "../utils/data";
 
 const SyncApp=()=>{
     const [identity, setIdentity] = useState('');

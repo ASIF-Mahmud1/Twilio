@@ -34,6 +34,16 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
       
     }
 
+    const handleUpdateParticipant=async(p)=>{
+      
+
+      const list = await onlineUsersSyncList.update(p.index,{name: 'UPDATED From Demo Project', info: p.data.info});
+
+      console.log("CHanged ", list);
+      console.log("What is p ", p.data)
+
+    }
+
     console.log("Online Users ",onlineUsers);
     console.log("Local Users ",localUser);
 
@@ -45,6 +55,7 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
             <div style={{display:'flex',flex:1, flexDirection:'row', alignItems:'center',}}>
                <div key={p.index}>{p.data.name}: {p.index}</div>
                <button onClick={()=>handleRemoveParticipant(p.index)}>Remove fromd Queue</button>
+               <button onClick={()=>handleUpdateParticipant(p)}>Update Item</button>
             </div>
           )
         })
