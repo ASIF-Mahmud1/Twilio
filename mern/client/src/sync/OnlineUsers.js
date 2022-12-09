@@ -39,9 +39,6 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
 
       const list = await onlineUsersSyncList.update(p.index,{name: 'UPDATED From Demo Project', info: {...p.data.info, on_going: onGoing}});
 
-      console.log("CHanged ", list);
-      console.log("What is p ", p.data)
-
     }
 
     console.log("Online Users ",onlineUsers);
