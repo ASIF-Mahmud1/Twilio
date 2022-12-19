@@ -13,6 +13,12 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
         });
     
         onlineUsersSyncList.on('itemRemoved', getSetOnlineUsers);
+
+       onlineUsersSyncList.on('itemUpdated', item => {
+       // alert("UPDATED")
+        console.log("Item Updated", item?.item?.descriptor?.data.info)
+       
+    });
     
         window.addEventListener("beforeunload", removeParticipant);
       }, []);
@@ -34,15 +40,15 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
       
     }
 
-    const handleUpdateParticipant=async(p, onGoing)=>{
+    const handleUpdateParticipant=async(p, key , value)=>{
       
 
-      const list = await onlineUsersSyncList.update(p.index,{name: 'UPDATED From Demo Project', info: {...p.data.info, on_going: onGoing}});
+      const list = await onlineUsersSyncList.update(p.index,{name: p.data.name, info: {...p.data.info, [key]: value}});
 
     }
 
     console.log("Online Users ",onlineUsers);
-    console.log("Local Users ",localUser);
+   // console.log("Local Users ",localUser);
 
     return (
         <div className="participants">
@@ -52,8 +58,12 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
             <div style={{display:'flex',flex:1, flexDirection:'row', alignItems:'center',}}>
                <div key={p.index}>{p.data.name}: {p.index}</div>
                <button onClick={()=>handleRemoveParticipant(p.index)}>Remove fromd Queue</button>
-               <button onClick={()=>handleUpdateParticipant(p, true)}>Update On Going True</button>
-               <button onClick={()=>handleUpdateParticipant(p, false)}>Update On Going False</button>
+               <button onClick={()=>handleUpdateParticipant(p, "on_going",true)}>Update On Going True</button>
+               <button onClick={()=>handleUpdateParticipant(p, "on_going", false)}>Update On Going False</button>
+
+               <button onClick={()=>handleUpdateParticipant(p,"is_scheduled", true)}>Booking Scheduled  True</button>
+               <button onClick={()=>handleUpdateParticipant(p, "is_scheduled",false)}>Booking Scheduled False</button>
+
             </div>
           )
         })
