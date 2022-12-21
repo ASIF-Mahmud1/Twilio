@@ -16,7 +16,7 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
 
        onlineUsersSyncList.on('itemUpdated', item => {
        // alert("UPDATED")
-        console.log("Item Updated", item?.item?.descriptor?.data.info)
+        console.log("Item Updated", item)
        
     });
     
