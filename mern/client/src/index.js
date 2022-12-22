@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import './assets/style.css';
 import Home from './Home';
-import ChatRoot from './conversation/App';
-import VideoRoot from './video/App'
+
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<Home />, document.getElementById('root'));
