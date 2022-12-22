@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Button, Form, Row, Col, Card } from 'antd';
-import { ReactComponent as Logo } from './conversation/assets/twilio-logo-red.svg';
-import ChatRoot from './conversation/App';
+import { ReactComponent as Logo } from './one-to-one-conversation/assets/twilio-logo-red.svg';
+import ChatRoot from './one-to-one-conversation/App';
 import VideoRoot from './video/App'
 import SyncRoot from './sync/SyncApp';
 
