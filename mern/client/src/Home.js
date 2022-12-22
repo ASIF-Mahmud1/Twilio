@@ -71,7 +71,7 @@ const ChooseApplication = ({ show }) => {
 
                             <Form.Item>
                                 <Button block type="primary" onClick={() => { show("chat") }} >
-                                    Conversation
+                                    One to One Conversation
                                 </Button>
                             </Form.Item>
                             <Form.Item>
