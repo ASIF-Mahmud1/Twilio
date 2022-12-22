@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Button, Form, Row, Col, Card } from 'antd';
 import { ReactComponent as Logo } from './one-to-one-conversation/assets/twilio-logo-red.svg';
 import ChatRoot from './one-to-one-conversation/App';
+import GroupChatRoot from './group-conversation/App';
 import VideoRoot from './video/App'
 import SyncRoot from './sync/SyncApp';
 
@@ -13,14 +14,19 @@ export class Home extends React.Component {
         super(props);
         this.state = {
             showConversation: false,
+            showGroupConversation: false,
             showVideoCall: false,
-            showSync:false
+            showSync:false,
         };
     }
     componentDidMount=()=>{
         if(window.location.pathname==="/chat")
         {
             this.setState({ showConversation: true })
+        }
+        if(window.location.pathname==="/group-chat")
+        {
+            this.setState({ showGroupConversation: true })
         }
         if(window.location.pathname==="/video")
         {
@@ -37,12 +43,15 @@ export class Home extends React.Component {
     }
 
     render() {
-        if (this.state.showConversation === false && this.state.showVideoCall === false && this.state.showSync === false) {
+        if (this.state.showConversation === false && this.state.showGroupConversation === false &&  this.state.showVideoCall === false && this.state.showSync === false) {
             return <ChooseApplication show={this.show} />
         }
 
         if (this.state.showConversation) {
             return <ChatRoot />
+        }
+        if (this.state.showGroupConversation) {
+            return <GroupChatRoot />
         }
 
         if (this.state.showVideoCall) {
@@ -72,6 +81,11 @@ const ChooseApplication = ({ show }) => {
                             <Form.Item>
                                 <Button block type="primary" onClick={() => { show("chat") }} >
                                     One to One Conversation
+                                </Button>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button block type="primary" onClick={() => { show("group-chat") }} >
+                                   Group Conversation
                                 </Button>
                             </Form.Item>
                             <Form.Item>
