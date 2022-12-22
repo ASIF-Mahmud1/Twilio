@@ -61,8 +61,8 @@ const OnlineUsers=({localUser, onlineUsersSyncList})=>{
                <button onClick={()=>handleUpdateParticipant(p, "on_going",true)}>Update On Going True</button>
                <button onClick={()=>handleUpdateParticipant(p, "on_going", false)}>Update On Going False</button>
 
-               <button onClick={()=>handleUpdateParticipant(p,"is_scheduled", true)}>Booking Scheduled  True</button>
-               <button onClick={()=>handleUpdateParticipant(p, "is_scheduled",false)}>Booking Scheduled False</button>
+               <button onClick={()=>handleUpdateParticipant(p,"is_schedueled", true)}>Booking Scheduled  True</button>
+               <button onClick={()=>handleUpdateParticipant(p, "is_schedueled",false)}>Booking Scheduled False</button>
 
             </div>
           )
