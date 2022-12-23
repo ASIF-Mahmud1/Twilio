@@ -7,6 +7,7 @@ const {conversationRoutes} =require ('../server/routes/conversation.routes')
 const {videoRoutes} = require('../server/routes/video.routes')
 const {coreRoutes} =  require('../server/routes/core.server.routes')
 const {paymentRoutes} =require('../server/routes/payment.routes')
+const {groupConversationRoutes} =require('../server/routes/group-conversation.routes')
 
 app.use(cors());
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use('/', coreRoutes)
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/conversation', conversationRoutes)
+app.use('/groupConversation', groupConversationRoutes)
 app.use('/video', videoRoutes)
 app.use('/payment', paymentRoutes)
 
