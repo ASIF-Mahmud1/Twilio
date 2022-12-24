@@ -13,7 +13,7 @@ import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
 import { getTwilioToken, signin } from "../api/auth.api";
 import { list, addParticipant } from "../api/conversation.api";
-import { signup } from "../api/user-api";
+import { signupGroupChat } from "../api/user-api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
 
@@ -64,8 +64,9 @@ class ConversationsApp extends React.Component {
   };
 
   signUp = async (name, email, password, admin) => {
-    console.log("Make API call to Sign UP", {name, email, password, admin});
-    const result= await signup({name, email, password, admin})
+    const room_id= "room:"+ Date.now()
+    console.log("Make API call to Sign UP For Group Chat", {name, email, password, admin,room_id});
+    const result= await signupGroupChat({name, email, password, admin, room_id: room_id })
     
     if(!result.error)
     {
