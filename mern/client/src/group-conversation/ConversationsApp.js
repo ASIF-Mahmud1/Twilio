@@ -7,12 +7,14 @@ import "./assets/ConversationSection.css";
 import { ReactComponent as Logo } from "./assets/twilio-mark-red.svg";
 
 import Conversation from "./Conversation";
+import ParticipantList from "./ParticipantList";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUp";
 import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
 import { getTwilioToken, signin } from "../api/auth.api";
 import { list, addParticipant } from "../api/conversation.api";
+import {getParticipantByConversationSID} from '../api/group-conversation.api'
 import { signupGroupChat } from "../api/user-api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
@@ -38,7 +40,8 @@ class ConversationsApp extends React.Component {
       conversations: [],
       allConversations:[],
       selectedConversationSid: null,
-      newMessage: ""
+      newMessage: "",
+      participantList:[]
     };
   }
 
@@ -188,9 +191,22 @@ class ConversationsApp extends React.Component {
     
   }
 
+  getParticpantList= async (sid)=>{
+    try {
+      const result = await getParticipantByConversationSID({sid:sid})
+      if(result?.participants)
+      {
+        this.setState({participantList: result?.participants})
+      }
+    } catch (error) {
+      alert("Something Worng in Line"+202)
+    }
 
+  }
+
+ 
   render() {
-  
+    console.log("Particiapnet List ", this.state.participantList); 
     const { conversations,allConversations, selectedConversationSid, status, admin } = this.state;
     /////////////////////////////////////////////////////////////////
 
@@ -215,10 +231,13 @@ class ConversationsApp extends React.Component {
     let conversationContent;
     if (selectedConversation) {
       conversationContent = (
+        <>
         <Conversation
           conversationProxy={selectedConversation}
           myIdentity={this.state.email}
-        />
+          />
+          <ParticipantList  participantList={this.state.participantList} />
+        </>
       );
     } else if (status !== "success") {
       conversationContent = "Loading your conversation!";
@@ -289,6 +308,7 @@ class ConversationsApp extends React.Component {
                   selectedConversationSid={selectedConversationSid}
                   onConversationClick={(item) => {
                     this.setState({ selectedConversationSid: item.sid });
+                    this.getParticpantList(item.sid)
                   }}
                 />
               </Sider>

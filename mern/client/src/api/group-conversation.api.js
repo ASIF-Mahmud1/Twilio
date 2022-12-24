@@ -36,8 +36,28 @@ const addParticipant = async ({sid,identity }) => {
   }
 }    
 
+const getParticipantByConversationSID = async ({sid }) => {
+
+  try {
+    let response = await fetch(url + 'groupConversation/listParticipant/'+sid, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${token}`,
+      },
+     
+    })
+    return await response.json()
+  } catch (err) {
+    console.log(err)
+  }
+}    
+
+
 export{
   createGroupChat,
-  addParticipant
+  addParticipant,
+  getParticipantByConversationSID
 }
   
