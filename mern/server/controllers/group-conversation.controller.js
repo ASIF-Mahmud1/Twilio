@@ -6,21 +6,29 @@ const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
    Creating  Group Conversation 
 */
 const create = async (req, res, next) => {
-
+  try {
    const body = req.body
    const { name, email ,room_id} = body
    const result = await client.conversations.v1.conversations
-      .create({ uniqueName: "Group Chat", friendlyName: "Group Chat", })
+      .create({ uniqueName:room_id , friendlyName: "Group Chat: "+name, })
 
    if (result.sid) {
       const first_participant = await client.conversations.v1.conversations(result.sid)
          .participants
-         .create({ identity: email })
+         .create({ identity: email, attributes:JSON.stringify({name}) })
    }
    res.status(201).send({
       message: `Group Chat With ${name} Created Successfully!`,
+      result:result
 
    });
+  } catch (error) {
+   res.status(500).send({
+      message: "Something went wrong",
+      error: error,
+   });
+  }
+  
 
 }
 
