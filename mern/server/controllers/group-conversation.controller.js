@@ -128,12 +128,42 @@ const list =async (req,res, next)=>{
 
 }
 
+const remove = async (req, res, next) => { 
 
+   const conversationSid = req.params.sid
+   console.log(req.params);
+   if(conversationSid)
+   {
+      try {
+         const result = await  client.conversations.v1.conversations(conversationSid).remove();
+        
+         res.status(200).send({
+            message: "Conversation Deleted Succesfully !",
+            result:result
+         });
+      } catch (error) {
+         res.status(500).send({
+            message: "Something went wrong",
+            error: error,
+         });
+      }
+ 
+   }
+   else 
+   {
+      res.status(500).send({
+         message: "Parameters are missing",
+         error: {},
+      });
+   }
+   
 
+}
 module.exports= {
     create:create,
     addParticipant:addParticipant,
     listParticipantByConversationID:listParticipantByConversationID,
-    list:list
+    list:list,
+    remove:remove
    }
  

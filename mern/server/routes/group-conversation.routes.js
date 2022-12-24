@@ -14,6 +14,9 @@ router.route('/addParticipant')
 router.route('/listParticipant/:sid')
   .get(groupConversationCtrl.listParticipantByConversationID)    
 
+router.route('/remove/:sid')
+  .delete(groupConversationCtrl.remove)    
+
 module.exports = {
   groupConversationRoutes: router
 }
