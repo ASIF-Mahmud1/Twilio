@@ -296,31 +296,24 @@ class ConversationsApp extends React.Component {
               <Content className="conversation-section">
                 <div id="SelectedConversation">{conversationContent}</div>
               </Content>
-{/* 
-              {
-                admin== true &&
-              
-                
                 <Sider theme={"light"} width={250}>
-            
-<ConversationsList
-  header={"Not Added with You"}
-  added={false}
-  conversations={unSubscribedConversations}
-  selectedConversationSid={selectedConversationSid}
-  onConversationClick={(item) => {
-    this.setState({ selectedConversationSid: item.sid }, () => {
-      this.handleAddParticipant(item)
-    });
-  }}
-/>
-</Sider>
-    } */}
+                    <ConversationsList
+                      header={"Not Added with You"}
+                      added={false}
+                      conversations={unSubscribedConversations}
+                      selectedConversationSid={selectedConversationSid}
+                      onConversationClick={(item) => {
+                        this.setState({ selectedConversationSid: item.sid }, () => {
+                          this.handleAddParticipant(item)
+                        });
+                      }}
+                    />
+
+                </Sider>
+
         
             </Layout>
-            <Button onClick={()=>{alert("Clicked")}}>Add to Group Chat With RoomID (room_id)</Button>
-            <Button onClick={()=>{alert("Clicked")}}>Join Group Chat With RoomID (room_id)</Button>
-
+            
           </Layout>
         </div>
       );

@@ -40,7 +40,7 @@ export class ConversationsList extends React.Component {
     
                             {
 
-                                item.uniqueName===localStorage.getItem("email") ?  "Customer Service" :  item.friendlyName || item.sid
+                                item.uniqueName===localStorage.getItem("email") ?  `You (${item.friendlyName})` :  item.friendlyName || item.sid
                             }
                             </Text>
                             <Button   onClick={() => onConversationClick(item)}>
