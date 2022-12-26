@@ -38,7 +38,7 @@ const getTwilioToken=(req,res)=>{
 
   const token= twilio.getToken({email:req.body.email})
   return res.json({
-    twilioToken: token,
+    result: token,
    
   })
 }

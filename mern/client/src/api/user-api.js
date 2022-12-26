@@ -21,7 +21,7 @@ const signup = async ({name, email, password, admin }) => {
   const signupGroupChat = async ({name, email, password, admin , room_id}) => {
 
     try {
-      let response = await fetch(url + 'user/signup', {
+      let response = await fetch(url + 'user/signup-group-chat', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
