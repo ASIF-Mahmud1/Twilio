@@ -14,7 +14,7 @@ import { ConversationsList } from "./ConversationsList";
 import { HeaderItem } from "./HeaderItem";
 import {  signin } from "../api/auth.api";
 
-import {list, addParticipant, getParticipantByConversationSID} from '../api/group-conversation.api'
+import {list, addParticipant, getParticipantByConversationSID, deleteConversationBySID} from '../api/group-conversation.api'
 import { signupGroupChat } from "../api/user-api";
 const { Content, Sider, Header } = Layout;
 const { Text } = Typography;
@@ -204,7 +204,24 @@ class ConversationsApp extends React.Component {
 
   }
 
- 
+  handleDeleteConversation  = async (sid)=>{
+    try {
+      const result = await deleteConversationBySID({sid:sid})
+      if(! result?.error)
+      {
+        console.log("Before ",this.state.allConversations.length);
+        const updatedList= this.state.allConversations.filter((item)=>item.sid !== sid)
+        this.setState({allConversations:updatedList})
+        console.log("After ",updatedList.length);
+
+        console.log(result)
+      }
+    } catch (error) {
+      alert("Something Worng in Line"+202)
+    }
+
+  }
+
   render() {
     console.log("Particiapnet List ", this.state.participantList); 
     const { conversations,allConversations, selectedConversationSid, status, admin } = this.state;
@@ -327,6 +344,12 @@ class ConversationsApp extends React.Component {
                           this.handleAddParticipant(item)
                         });
                       }}
+
+                      onConversationDelete={(item) => {
+                        this.handleDeleteConversation( item.sid)
+                      }}
+
+                      
                     />
 
                 </Sider>

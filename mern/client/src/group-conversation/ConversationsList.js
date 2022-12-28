@@ -10,7 +10,7 @@ const { Text } = Typography;
 
 export class ConversationsList extends React.Component {
     render() {
-        const { conversations, selectedConversationSid, onConversationClick, header, added } = this.props;
+        const { conversations, selectedConversationSid, onConversationClick,onConversationDelete, header, added } = this.props;
 
         return (
             <List
@@ -43,12 +43,20 @@ export class ConversationsList extends React.Component {
                                 item.uniqueName===localStorage.getItem("email") ?  `You (${item.friendlyName})` :  item.friendlyName || item.sid
                             }
                             </Text>
-                            <Button   onClick={() => onConversationClick(item)}>
+                            <div>
+                                <Button onClick={() => onConversationClick(item)}>
+                                    {
+                                        added ? <Icon type={"right"} /> : <Icon type={"plus"} />
+                                    }
+                                </Button>
                                 {
-                                    added ?  <Icon type={"right"} />: <Icon type={"plus"} />
+                                    !added && <Button onClick={() => onConversationDelete(item)}>
+                                        {
+                                            !added && <Icon type={"cross"} />
+                                        }
+                                    </Button>
                                 }
-                               
-                            </Button>
+                            </div>
                         </List.Item>
                     )
                 }}

@@ -1,4 +1,4 @@
-import { url } from '../config/config'
+import { url ,localUrl} from '../config/config'
 
 const list = async () => {
 
@@ -69,13 +69,33 @@ const getParticipantByConversationSID = async ({sid }) => {
   } catch (err) {
     console.log(err)
   }
+}   
+
+const deleteConversationBySID = async ({sid }) => {
+
+  try {
+    let response = await fetch(url + 'groupConversation/remove/'+sid, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${token}`,
+      },
+     
+    })
+    return await response.json()
+  } catch (err) {
+    console.log(err)
+  }
 }    
+
 
 
 export{
   list,
   createGroupChat,
   addParticipant,
-  getParticipantByConversationSID
+  getParticipantByConversationSID,
+  deleteConversationBySID
 }
   
